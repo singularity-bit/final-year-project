@@ -1,10 +1,10 @@
 
 import 'bulma/css/bulma.css';
 import './App.css';
-import 'fa-icons';
 import React, {Component} from 'react';
-import Login from './Components/Login/Login';
-import Register from './Components/Register/Register';
+import Login from './Pages/Signin/Login/Login';
+import Register from './Pages/Signin/Register/Register';
+import Home from './Pages/Home/Home';
 
 
 class App extends Component {
@@ -34,9 +34,17 @@ class App extends Component {
     return (
       <div className="App">
         {
-          route==='signin'?
-          <Login onRouteChange={this.onRouteChange}/>:
-          <Register onRouteChange={this.onRouteChange}/>
+          route==='home'
+          ?
+          <Home onRouteChange={this.onRouteChange}/>
+          :(
+            route==='register'
+            ?
+            <Register onRouteChange={this.onRouteChange}/>
+            :
+            <Login onRouteChange={this.onRouteChange}/>
+          )
+          
         }
         
       </div>

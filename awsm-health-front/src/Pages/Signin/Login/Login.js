@@ -49,7 +49,9 @@ class Login extends React.Component {
                                     <br></br>
                                 </div>
                                             
-                                <button className="button is-block is-fullwidth is-primary mgt-small">Sign in</button>
+                                <button className="button is-block is-fullwidth is-primary mgt-small"
+                                    onClick={()=>onRouteChange('home')}
+                                >Sign in</button>
                             </form>            
                             <p className="has-text-grey has-text-centered">
                                 <a 
