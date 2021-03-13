@@ -1,0 +1,10 @@
+.mainView{
+    display: flex;
+    justify-content: flex-start;
+    position: relative;
+    background-color: #E4E6EB;
+}
+.column{
+    height: 100vh;
+    
+}

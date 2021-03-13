@@ -1,18 +1,27 @@
 import React from 'react'
-import Navbar from '../../Components/Navbar/Navbar';
+import Sidebar from '../../Components/Sidebar/Sidebar';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
+import Statistics from '../../Components/Statistics/Statistics';
 
+const data={
+    nrOfSpecialists:45,
+    nrOfVisits:1000,
+    nrOfPatients:3000,
+    nrOfAppointments:1500
+}
 function Home() {
+    const {nrOfSpecialists,nrOfVisits,nrOfPatients,nrOfAppointments}=data;
     return (
         <>
-            <Router>
-                <Navbar/>
-                <Switch>
-                    <Route path='/' />
-                </Switch>
-            </Router>
+            <Statistics nrOfSpecialists={nrOfSpecialists}
+                nrOfVisits={nrOfVisits}
+                nrOfPatients={nrOfPatients}
+                nrOfAppointments={nrOfAppointments}
+            />
             
-        </>
+
+            
+    </>
     )
 }
 

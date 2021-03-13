@@ -1,0 +1,13 @@
+.tile.is-parent:hover{
+    transition: all 0.3s ease-out;
+    transform: translateY(-5px) scale(1.005) translateZ(0);
+}
+.box{
+    border-radius: 15px;
+}
+.fas.fa-users.fa-4x{
+    position: relative;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
