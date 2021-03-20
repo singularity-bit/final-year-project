@@ -35,13 +35,10 @@ function UpcomingAppointmentsWidget() {
                 <p className="panel-heading">
                     Upcoming Appointments
                 </p>
-                <div className='content mt-5'>
-                    <a className="">
-                        {appointments}
-                    </a>
-                </div>
-            
-            
+                <ul className='menu-list p-0 m-0'>
+                    {appointments}
+                </ul>
+                
             </nav>
         </div>
         

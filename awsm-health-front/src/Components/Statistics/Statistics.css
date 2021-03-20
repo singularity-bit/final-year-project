@@ -5,9 +5,15 @@
 .box{
     border-radius: 15px;
 }
-.fas.fa-users.fa-4x{
-    position: relative;
-    margin-top: 0;
-    margin-bottom: 0;
+
+
+.fas.fa-users.fa-3x.is-hidden-touch{
+    
+    border-radius: 30%;
+    background:#EEF3FC;
+}
+.chart{
+    width: 100%;
+    height: auto;
 }
 

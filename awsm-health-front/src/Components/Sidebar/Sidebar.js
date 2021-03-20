@@ -40,8 +40,8 @@ function Sidebar() {
                             <Link to={item.path} key={index}                               
                                     className='is-mobile mx-0 px-6'
                                 >
-                                    <span class="icon-text mx-0">
-                                    <span class="icon">
+                                    <span className="icon-text mx-0">
+                                    <span className="icon">
                                         <div>
                                             {item.icon}
                                         </div>

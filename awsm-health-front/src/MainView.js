@@ -10,7 +10,7 @@ function MainView() {
         <>
             <div className='columns'>
                 <Sidebar/>
-                <div className='column m-0'> 
+                <div className='column m-0 px-6'> 
                     <TopNavigation/>
                     <Routes/>
                 </div>

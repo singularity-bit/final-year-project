@@ -8,6 +8,7 @@ import Home from './Pages/Home/Home';
 import MainView from './MainView';
 
 
+
 class App extends Component {
   constructor(){
     super();
