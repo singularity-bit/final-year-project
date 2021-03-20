@@ -5,8 +5,8 @@ function SpecialistCard(props) {
     const {data,filter}=props;
     //console.log(data)
     const displaySpecialist=data.filter((item,index)=>{    
-        console.log(filter);
-        return filter==='all'?data:item.category==filter 
+        
+        return filter===''?data:item.category==filter 
     })
     
 
@@ -41,15 +41,7 @@ function SpecialistCard(props) {
 
     return (
         <>      
-            <div class="tags">
-                    <span class="tag">One</span>
-                    <span class="tag">Two</span>
-                    <span class="tag">Three</span>
-                    <span class="tag is-warning">
-                        Remove all filters
-                    <button class="delete is-small"></button>
-                    </span>
-            </div> 
+            
             {specialistList}
         </>
     )
