@@ -4,7 +4,6 @@ import './App.css';
 import React, {Component} from 'react';
 import Login from './Pages/Signin/Login/Login';
 import Register from './Pages/Signin/Register/Register';
-import Home from './Pages/Home/Home';
 import MainView from './MainView';
 
 

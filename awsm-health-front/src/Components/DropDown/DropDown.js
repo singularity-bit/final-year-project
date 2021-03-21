@@ -3,7 +3,7 @@ import onClickOutside from 'react-onclickoutside'
 function Dropdown(props) {
     const [isOpen,setOpen]=useState(false);
     const [itemIsActive,setItemActive]=useState(false);
-    const [selectedItem,setSelectedItem]=useState([]);
+    const [selectedItem,setSelectedItem]=useState();
 
     const {tags,selectedTags}=props;
 
@@ -22,7 +22,7 @@ function Dropdown(props) {
         
         return(
             <a key={index}  onClick={()=>{               
-                setSelectedItem([...selectedItem,item]);
+                setSelectedItem(item);
                 
                 handleItemClick();
             }}
@@ -40,7 +40,7 @@ function Dropdown(props) {
                         
                         setOpen(!isOpen)
                     }} aria-haspopup="true" aria-controls="dropdown-menu3">
-                    <span>Sort by {selectedItem[selectedItem.length-1]}</span>
+                    <span>Sort by {selectedItem}</span>
                     <span className="icon is-small">
                         <i className="fas fa-angle-down" aria-hidden="true"></i>
                     </span>

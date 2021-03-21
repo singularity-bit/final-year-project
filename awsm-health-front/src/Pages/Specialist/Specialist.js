@@ -4,6 +4,7 @@ import useComponentVisible from '../../Components/useComponentVisible'
 
 import DropDown from '../../Components/DropDown/DropDown'
 
+//const activeTags=new Set();
 function Specialist() {
     const specialistTypes=['oculist','oftalmolog','chirurg','dermatolog'];
     const specialistList=[
@@ -44,32 +45,69 @@ function Specialist() {
             rating:3
         }
     ]
+    const specialistListExpanded=specialistList;
 
-    const selectedItem=data=> console.log(data);
-    
+    //hooks for filtering
+    const [listOfFilters,setListOfFilters]=useState(new Set());
+
+    const filterItems=data=> {  
+        setListOfFilters(new Set([...listOfFilters,data]));
+    }
+
+    //on page load display all specialist
+    useEffect(()=>{
+        removeAllFilters()
+        specialistListExpanded.forEach(obj=>obj.isHovered=false)
+        //console.log(JSON.stringify(specialistListExpanded))
+        
+    },[])
+
+    const displayTags=Array.from(listOfFilters).map((item,index)=>{
+        return(
+            item!==undefined && 
+            <span key={index} className="tag">
+                {item}
+            <button className="delete is-small" onClick={()=>{
+                removeCurrentFilter(item)
+            }}></button>
+            </span>
+        )
+    })
+
+    const removeAllFilters=()=>{
+        setListOfFilters(new Set());
+    }
+    const removeCurrentFilter=(item)=>{
+        setListOfFilters(prev=>new Set([...prev].filter(x=>x!==item)));
+    }
     return (
         <div>
             <h1 className=' has-text-centered-touch title is-4 has-text-grey-dark'>Specialist</h1>
 
             {/*dropdown */}
                 
-                <DropDown tags={specialistTypes} selectedTags={selectedItem}/>
+                <DropDown tags={specialistTypes} selectedTags={filterItems}/>
                 
-                <div class="tags my-3">
-                    
-                    <span class="tag is-warning">
+                <div className="tags my-3">
+                    {displayTags}
+
+                    {/*if there is more than 1 active filter then render remove all filter button*/}
+                    {listOfFilters.size>=2 &&
+                        <span className="tag is-warning">
                         Remove all filters
-                    <button class="delete is-small" onClick={()=>{
-                        
-                    }}></button>
+                        <button className="delete is-small" onClick={()=>{
+                            removeAllFilters()
+                        }}></button>
                     </span>
+                    }
+                    
                 </div> 
                 
 
                 {/*specialist cards */}
 
                 <div className='columns is-multiline pt-5'>
-                    <SpecialistCard data={specialistList} />
+                    <SpecialistCard data={specialistListExpanded} filter={listOfFilters}/>
                 </div>
         </div>
     )
