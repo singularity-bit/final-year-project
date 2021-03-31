@@ -1,4 +1,4 @@
-import React,{useState} from 'react'
+import React,{useEffect, useState} from 'react'
 import * as FaIcons from 'react-icons/fa';
 import {SidebarData} from './SidebarData';
 import {Link,BrowserRouter} from 'react-router-dom';
@@ -8,8 +8,33 @@ import './Sidebar.css';
 
 function Sidebar() {
     const [active,setActive]=useState(SidebarData[0].title);
+    
+    const [windowSize, setWindowSize] = useState({
+        width: window.innerWidth,
+        height: window.innerHeight
+    });
+    const [isMobile, setMobile] = useState(false);
 
-    const activeStyle='has-text-link has-text-weight-bold has-background-link-light';
+    useEffect(()=>{
+        function handleResize() {
+            setWindowSize({
+                height: window.innerHeight,
+                width: window.innerWidth
+            }) 
+        }
+          // Add event listener
+        window.addEventListener('resize', handleResize);  
+          // Call handler right away so state gets updated with initial window size
+        handleResize(); 
+          // Remove event listener on cleanup
+        return () => window.removeEventListener('resize', handleResize);
+    },[]);
+    useEffect(()=>{
+        if(windowSize.width<600){
+            setMobile(true);
+        }else setMobile(false)
+    },[windowSize.width]);
+    const activeStyle='has-background-info-light';
     const defaultStyle='';
 
     const [activeClass,setActiveClass]=useState(defaultStyle);
@@ -20,14 +45,11 @@ function Sidebar() {
     const activateClass=name=>{
         setActiveClass(name);
     }
+    
     const menuItems=
         SidebarData.map((item,index)=>{
         
         const isSelected=active===item.title;
-        //const isActiveClass=activeClass===item.className;
-
-        //console.log(`${item.title} is selected? ${isSelected}`)
-       // console.log(`${item.className} is active? ${isActiveClass}`);
             return(
                         <li key={index} 
                             onClick={()=>{
@@ -35,13 +57,13 @@ function Sidebar() {
                                 activateClass(activeStyle);
                                 item.className=activeClass;
                                 }}
-                                className={isSelected && item.className} 
+                                
                         >
                             <Link to={item.path} key={index}                               
-                                    className='is-mobile mx-0 px-6'
+                                    className={isSelected && item.className} 
                                 >
-                                    <span className="icon-text mx-0">
-                                    <span className="icon">
+                                    <span className="icon-text ">
+                                    <span className="icon pl-4">
                                         <div>
                                             {item.icon}
                                         </div>
@@ -54,19 +76,10 @@ function Sidebar() {
         })
     return (
         <>
-                    <div className='column is-narrow '>
-                        <div className=''>
-                            <div className="navbar-brand">
-                                <a className="navbar-item" href="https://bulma.io">
-                                <img alt='' src="https://bulma.io/images/bulma-logo.png" width="112" height="28"/>
-                                </a>
-                            </div>
-                            <ul className='menu-list'>
-                                {menuItems}
-                            </ul>
-                        </div>
-                        
-                    </div>
+            
+            <ul className={!isMobile?"menu-list":"pt-6 is-flex is-flex-direction-row is-justify-content-space-around"}>
+                {menuItems}
+            </ul>
             
             
         </>

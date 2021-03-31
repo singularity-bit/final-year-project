@@ -7,39 +7,47 @@ import DropDown from '../../Components/DropDown/DropDown'
 //const activeTags=new Set();
 function Specialist() {
     const specialistTypes=['oculist','oftalmolog','chirurg','dermatolog'];
+    
     const specialistList=[
         {
+            id:0,
             name:'Vasile',
             category: 'oculist',
             rating:3
         },
         {
+            id:1,
             name:'Alex',
             category: 'oftalmolog',
             rating:3
         },
         {
+            id:2,
             name:'Ion',
             category: 'chirurg',
             rating:3
         },
         {
+            id:3,
             name:'Maria',
             category: 'dermatolog',
             rating:3
         }
         ,
         {
+            id:4,
             name:'bija',
             category: 'oftalmolog',
             rating:3
         },
         {
+            id:5,
             name:'dulghieru',
             category: 'chirurg',
             rating:3
         },
         {
+            id:6,
             name:'pusia',
             category: 'dermatolog',
             rating:3
@@ -81,7 +89,7 @@ function Specialist() {
         setListOfFilters(prev=>new Set([...prev].filter(x=>x!==item)));
     }
     return (
-        <div>
+        <div className="container is-fluid">
             <h1 className=' has-text-centered-touch title is-4 has-text-grey-dark'>Specialist</h1>
 
             {/*dropdown */}
@@ -106,7 +114,7 @@ function Specialist() {
 
                 {/*specialist cards */}
 
-                <div className='columns is-multiline pt-5'>
+                <div className='columns is-multiline  pt-5'>
                     <SpecialistCard data={specialistListExpanded} filter={listOfFilters}/>
                 </div>
         </div>

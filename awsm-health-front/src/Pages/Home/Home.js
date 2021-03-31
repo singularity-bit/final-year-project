@@ -12,7 +12,7 @@ const data={
 function Home() {
     const {nrOfSpecialists,nrOfVisits,nrOfPatients,nrOfAppointments}=data;
     return (
-        <>
+        <div className="container is-fluid">
             <Statistics nrOfSpecialists={nrOfSpecialists}
                 nrOfVisits={nrOfVisits}
                 nrOfPatients={nrOfPatients}
@@ -21,7 +21,7 @@ function Home() {
             
 
             
-    </>
+    </div>
     )
 }
 

@@ -9,6 +9,7 @@ import Pacienti from './Pacienti/Pacienti'
 import Specialist from './Specialist/Specialist'
 import NewAppointment from './NewAppointment/NewAppointment'
 import Login from './Signin/Login/Login'
+import SpecialistProfile from './Specialist/SpecialistProfile'
 
 const  Routes=()=>{
     return (
@@ -20,6 +21,7 @@ const  Routes=()=>{
                 <Route  path='/specialist' component={Specialist}/>
                 <Route  path='/login' component={Login}/>
                 <Route path='/new-appointment' component={NewAppointment}/>
+                <Route path='/profile/:id/:name/:category'  component={SpecialistProfile}/>
             </Switch>
         
     )

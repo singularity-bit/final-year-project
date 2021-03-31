@@ -1,10 +1,7 @@
-.mainView{
-    display: flex;
-    justify-content: flex-start;
-    position: relative;
-    background-color: #E4E6EB;
+.columns{
+    height: 100%;
 }
-.column{
-    height: 100vh;
-    
+.sidebar{
+
+    border-right: 3px solid #F1F1F1;
 }

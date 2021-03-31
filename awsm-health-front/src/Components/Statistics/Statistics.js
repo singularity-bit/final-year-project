@@ -10,7 +10,7 @@ function Statistics(props) {
     const {nrOfSpecialists,nrOfVisits,nrOfPatients,nrOfAppointments}=props;
     return (
         <div>
-            <div className='container my-6'>
+            
                 
                 <div className='is-flex is-justify-content-space-between is-flex-wrap-wrap block'>
                     <h4 class="title is-4 has-text-grey-dark">Overview</h4>
@@ -76,7 +76,7 @@ function Statistics(props) {
                 </div>
             
                 
-            </div>
+           
         </div>
     )
 }
