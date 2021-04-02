@@ -53,7 +53,6 @@ function Specialist() {
             rating:3
         }
     ]
-    const specialistListExpanded=specialistList;
 
     //hooks for filtering
     const [listOfFilters,setListOfFilters]=useState(new Set());
@@ -64,8 +63,8 @@ function Specialist() {
 
     //on page load display all specialist
     useEffect(()=>{
-        removeAllFilters()
-        specialistListExpanded.forEach(obj=>obj.isHovered=false)
+        removeAllFilters();
+        [...specialistList].forEach(obj=>obj.isHovered=false)
         //console.log(JSON.stringify(specialistListExpanded))
         
     },[])
@@ -115,7 +114,7 @@ function Specialist() {
                 {/*specialist cards */}
 
                 <div className='columns is-multiline  pt-5'>
-                    <SpecialistCard data={specialistListExpanded} filter={listOfFilters}/>
+                    <SpecialistCard data={[...specialistList]} filter={listOfFilters}/>
                 </div>
         </div>
     )

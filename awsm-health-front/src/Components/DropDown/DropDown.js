@@ -1,17 +1,10 @@
 import React,{useState,useEffect} from 'react'
 import onClickOutside from 'react-onclickoutside'
 function Dropdown(props) {
+    const {tags,selectedTags}=props;
     const [isOpen,setOpen]=useState(false);
-    const [itemIsActive,setItemActive]=useState(false);
     const [selectedItem,setSelectedItem]=useState();
 
-    const {tags,selectedTags}=props;
-
-    const handleItemClick=()=>{
-        setItemActive(!itemIsActive);
-        
-    }  
-    
     useEffect(()=>{
         selectedTags(selectedItem);
     },[selectedItem])
@@ -19,14 +12,13 @@ function Dropdown(props) {
     Dropdown.handleClickOutside=()=>setOpen(false);
 
     const dropdownItems=tags.map((item,index)=>{
-        
+        //verificam daca itemul pe care am dat click e activ
+        const active=selectedItem==item;
         return(
             <a key={index}  onClick={()=>{               
                 setSelectedItem(item);
-                
-                handleItemClick();
             }}
-            className={"dropdown-item"}
+            className={!active?"dropdown-item":"dropdown-item is-active"}
             >
                     {item}
                 </a>

@@ -3,7 +3,7 @@ import './TopNavigation.css';
 export default function TopNavigation() {
     return (
         <nav className="navbar my-4 px-6">
-            <div className='navbar-menu block '>
+            <div className='navbar-menu '>
                 <div classNam='navbar-start block '>
                     <div className='navbar-item is-spaced'>
                     <p className="control has-icons-left">
@@ -19,12 +19,12 @@ export default function TopNavigation() {
                     <div className='navbar-item id-spaced'>
                         <div className='field is-grouped'>
                             <p className='control '>
-                                <i className="far fa-bell fa-2x pr-5"/>
+                                <i className="far fa-bell fa-2x pr-5 is-clickable"/>
                                 
                             </p>
                             <p className='control dropdown'>
                                 
-                                <i className="fas fa-user-circle fa-2x pr-5"></i>
+                                <i className="fas fa-user-circle fa-2x pr-5 is-clickable"></i>
                             </p>
                             
                         </div>

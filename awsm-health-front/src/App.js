@@ -1,56 +1,49 @@
 
 import 'bulma/css/bulma.css';
 import './App.css';
-import React, {Component} from 'react';
+import React, {useState,useEffect} from 'react';
+import {Link} from 'react-router-dom'
 import Login from './Pages/Signin/Login/Login';
 import Register from './Pages/Signin/Register/Register';
 import MainView from './MainView';
 
 
 
-class App extends Component {
-  constructor(){
-    super();
-    this.state={
-      input:'',
-      route:'signin',
-      isSignedIn:false
-    }
-  }
+function App() {
 
-  onInputChange = (event) => {
-    this.setState({input: event.target.value});
-  }
+  const [route,setRoute]=useState('login');
+  const [isSignedIn,setSignedIn]=useState(false);
+  const [userType,setUserType]=useState();
 
-  onRouteChange=(route)=>{
-    if(route==='signout'){
-      this.setState({isSignedIn:false})
-    }else if(route==='home'){
-      this.setState({isSignedIn:true})
+  const onRouteChange=(argument)=>{
+    if(argument==='signout'){
+      
+      setSignedIn(false)
+    }else if(argument==='home'){
+      setSignedIn(true);
     }
-    this.setState({route:route});
+    setRoute(argument);
   }
-  render(){
-    const {route} =this.state;
+  
     return (
       <div className="App">
         {
           route==='home'
           ?
-          <MainView onRouteChange={this.onRouteChange}/>
+            <MainView onRouteChange={(argument)=>onRouteChange(argument)}/>
+
           :(
             route==='register'
             ?
-            <Register onRouteChange={this.onRouteChange}/>
+            <Register onRouteChange={(argument)=>onRouteChange(argument)}/>
             :
-            <Login onRouteChange={this.onRouteChange}/>
+            <Login onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
           )
           
         }
         
       </div>
-    );
-  } 
+    ); 
 }
 
 export default App;

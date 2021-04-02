@@ -12,7 +12,7 @@ function Statistics(props) {
         <div>
             
                 
-                <div className='is-flex is-justify-content-space-between is-flex-wrap-wrap block'>
+                <div className='is-flex is-justify-content-space-between is-flex-wrap-wrap py-5'>
                     <h4 class="title is-4 has-text-grey-dark">Overview</h4>
                     <Link to='/new-appointment'>
                         <button className="button is-link  ">New appointment</button>

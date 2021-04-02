@@ -30,7 +30,7 @@ function Sidebar() {
         return () => window.removeEventListener('resize', handleResize);
     },[]);
     useEffect(()=>{
-        if(windowSize.width<600){
+        if(windowSize.width<800){
             setMobile(true);
         }else setMobile(false)
     },[windowSize.width]);

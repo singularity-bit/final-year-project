@@ -1,31 +1,120 @@
-import React from 'react';
+import React,{useState,useEffect} from 'react';
 
 
-class Register extends React.Component {
-    constructor(props){
-        super(props);
-        this.state={
-            signInEmail:'',
-            signInPassword:''
+function Register(props){
+    const {onRouteChange}=props;
+    const [nume, setNume] = useState('')
+    const [prenume, setPrenume] = useState('')
+    const [signInEmail, setsignInEmail] = useState();
+    const [signInPassword, setssignInPassword] = useState();
+    const [cnp, setcnp] = useState();
+    const [phoneNr, setphoneNr] = useState()
+    const [passRepeat, setpassRepeat] = useState()
+    const [targetRoute,setTargetRoute]=useState('register');
+    
+
+    const [cnpIsValid, setcnpIsValid] = useState(false)
+    const [emailIsValid, setemailIsValid] = useState(false)
+    const [phoneIsValid, setphoneIsValid] = useState(false)
+    const [passwordIsValid, setpasswordIsValid] = useState(false)
+    const [numeIsValid, setnumeIsValid] = useState(false)
+    const [prenumeIsValid, setprenumeIsValid] = useState(false)
+
+    //regex pt cnp
+    let cnpREGEX=new RegExp(/^[1-9]\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(0[1-9]|[1-4]\d|5[0-2]|99)(00[1-9]|0[1-9]\d|[1-9]\d\d)\d$/)
+    //regex pt email
+    let mailREGEX=new RegExp(/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/)
+
+    //regex pt tel
+    let phoneREGEX=new RegExp(/^(\+4|)?(07[0-8]{1}[0-9]{1}|02[0-9]{2}|03[0-9]{2}){1}?(\s|\.|\-)?([0-9]{3}(\s|\.|\-|)){2}$/)
+
+    //regex pt nume
+    let nameREGEX=new RegExp(/^[a-zA-Z]+(([',. -][a-zA-Z ])?[a-zA-Z]*)*$/)
+
+    const matchEMAIL=()=>{
+        let e=mailREGEX.exec(signInEmail)
+        if(e!==null){
+            setemailIsValid(true)
+            return e[0];
+        }else{
+            setemailIsValid(false)
+            return false;
         }
     }
+    const matchCNP=()=>{
+        let c=cnpREGEX.exec(cnp)
+        if(c!==null){
+            setcnpIsValid(true);
+            return c[0]
+        }else {
+            setcnpIsValid(false);
+            return false;
+        }
 
-    onEmailChange=(event)=>{
-        this.setState(
-            { signInEmail:event.target.value }
-        )
     }
+    const matchPHONE=()=>{
+        let p=phoneREGEX.exec(phoneNr)
+        if(p!==null){
+            setphoneIsValid(true)
+            return p[0]
+        }else{
+            setphoneIsValid(false)
+            return false
+        }
+    }
+    const matchPASS=()=>{
+        if(passRepeat===signInPassword){
+            setpasswordIsValid(true)
+        }else{
+            setpasswordIsValid(false)
+        }
+    }
+    const matchNume=()=>{
+        let n=nameREGEX.exec(nume)
+        if(n!==null){
+            setnumeIsValid(true)
+        }else{
+            setnumeIsValid(false)
+        }
+    }
+    const matchPrenume=()=>{
+        let p=nameREGEX.exec(prenume)
+        if(p!==null){
+            setprenumeIsValid(true)
+        }else{
+            setprenumeIsValid(false)
+        }
+    }
+    
+    useEffect(()=>{
+        onRouteChange(targetRoute);
+    },[targetRoute])
 
-    onPasswordChange=(event)=>{
-        this.setState(
-            { signInPassword:event.target.value }
-        )
-    }
-    render(){
-        const {onRouteChange}=this.props;
-        return(
+    useEffect(()=>{
+        matchCNP();
+    },[cnp])
+
+    useEffect(()=>{
+        matchEMAIL();
+    },[signInEmail])
+
+    useEffect(()=>{
+        matchPHONE();
+    },[phoneNr])
+    useEffect(()=>{
+        matchPASS();
+    },[passRepeat,signInPassword])
+
+    useEffect(()=>{
+        matchNume();
+    },[nume])
+    
+    useEffect(()=>{
+        matchPrenume();
+    },[prenume])
+    return(
             <section className="hero is-fullheight">
-                    <div className="content ">
+                    
                         <div className="column is-4 is-offset-4">
                             <p className="title is-1 has-text-centered has-text-left-mobile pt-6">AWSMHealth</p>
                             <h2 className="subtitle has-text-centered is-size-5 ">Please  register</h2>
@@ -37,7 +126,7 @@ class Register extends React.Component {
                                                 <label className="label has-text-left">Nume</label>
                                             </div>
                                             <p className="control is-expanded has-icons-left">
-                                                <input className="input" type="text" placeholder="nume"/>
+                                                <input onChange={(event)=>setNume(event.target.value)} className={numeIsValid?"input":"input is-danger"} type="text" placeholder="nume"/>
                                                 <span className="icon is-small is-left">
                                                 <i className="fas fa-user"></i>
                                                 </span>
@@ -48,7 +137,7 @@ class Register extends React.Component {
                                                     <label className="label has-text-left">Prenume</label>
                                                 </div>
                                                 <p className="control is-expanded has-icons-left">
-                                                    <input className="input" type="text" placeholder="prenume"/>
+                                                    <input onChange={(event)=>setPrenume(event.target.value)} className={prenumeIsValid?"input":"input is-danger"} type="text" placeholder="prenume"/>
                                                     <span className="icon is-small is-left">
                                                     <i className="fas fa-user"></i>
                                                     </span>
@@ -64,14 +153,19 @@ class Register extends React.Component {
                                                         <label className="label has-text-left">CNP</label>
                                                     </div>
                                                     <p className="control is-expanded has-icons-left">
-                                                        <input className="input is-danger" type="text" placeholder="cnp"/>
+                                                        <input onChange={(event)=>setcnp(`${event.target.value}`)} className={cnpIsValid?"input is-success":"input is-danger"} type="text" placeholder="cnp"/>
                                                         <span className="icon is-small is-left">
                                                         <i className="fas fa-id-card"></i>
                                                         </span>
                                                     </p>
-                                                    <p className="help is-danger">
-                                                    This field is required
-                                                    </p>
+                                                    {
+                                                        !cnpIsValid&&
+                                                            <p className="help is-danger">
+                                                                Wrong CNP
+                                                            </p>
+                                                        
+                                                    }
+                                                    
                                             </div>
                                     </div>
                                         
@@ -83,7 +177,7 @@ class Register extends React.Component {
                                                             <label className="label has-text-left">Email</label>
                                                     </div>
                                                     <p className="control is-expanded has-icons-left has-icons-right">
-                                                        <input className="input is-success" type="email" placeholder="Email" />
+                                                        <input onChange={(event)=>setsignInEmail(event.target.value)} className={emailIsValid?"input is-success":"input is-danger"} type="email" placeholder="Email" />
                                                         <span className="icon is-small is-left">
                                                         <i className="fas fa-envelope"></i>
                                                         </span>
@@ -104,14 +198,15 @@ class Register extends React.Component {
                                                 </a>
                                                 </p>
                                                 <p className="control is-expanded">
-                                                <input className="input is-danger" type="tel" placeholder="Nr de telefon"/>
+                                                <input onChange={(event)=>setphoneNr(event.target.value)} className={phoneIsValid?"input is-success":"input is-danger"} type="tel" placeholder="Nr de telefon"/>
                                                 </p>
                                                 
                                             </div>
+                                            {!phoneIsValid&&
                                             <p className="help is-danger">
                                             This field is required
                                             </p>
-                                            
+                                            }
                                             </div>
                                         </div>
                                     </div>                                           
@@ -122,7 +217,7 @@ class Register extends React.Component {
                                                             <label className="label has-text-left">Parola</label>
                                                     </div>
                                     <p className="control has-icons-left">
-                                        <input className="input" type="password" placeholder="Password"/>
+                                        <input onChange={(event)=>setssignInPassword(event.target.value)} className="input" type="password" placeholder="Password"/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-lock"></i>
                                         </span>
@@ -134,12 +229,17 @@ class Register extends React.Component {
                                                             <label className="label has-text-left">Repetati parola</label>
                                                     </div>
                                     <p className="control has-icons-left">
-                                        <input className="input" type="password" placeholder="Password"/>
+                                        <input onChange={(event)=>setpassRepeat(event.target.value)} className={passwordIsValid?"input is-success":"input is-danger"} type="password" placeholder="Password"/>
                                         <span className="icon is-small is-left">
                                         <i className="fas fa-lock"></i>
                                         </span>
                                     </p>
                                     </div>
+                                    {!passwordIsValid&&
+                                            <p className="help is-danger">
+                                            Pass don't match
+                                            </p>
+                                            }
 
                                     <div className="field is-horizontal">                                                             
                                     </div>
@@ -153,15 +253,13 @@ class Register extends React.Component {
                             </form>            
                             <p className="has-text-grey has-text-centered">
                                 <a 
-                                    onClick={() => onRouteChange('register')}
+                                    onClick={()=>setTargetRoute('login')}
                                 >Sign In</a> &nbsp;·&nbsp;
                                 <a href="../">Forgot Password</a> &nbsp;·&nbsp;
                                 <a href="../">Need Help?</a>
                             </p>             
-                    </div>
-                </div>     
+                    </div>                     
             </section> 
         );
-    }
 }
 export default Register;
