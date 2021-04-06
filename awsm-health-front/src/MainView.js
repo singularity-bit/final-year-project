@@ -5,9 +5,11 @@ import TopNavigation from './Components/TopNavigation/TopNavigation'
 import Routes from './Pages/Routes';
 import './MainViev.css';
 
-function MainView() {
-
-    
+function MainView(props) {
+    const {userType}=props;
+    useEffect (()=>{
+        console.log("from main ",userType)
+    },[])
     return (
         <>
         <div className="columns">            
@@ -17,7 +19,7 @@ function MainView() {
             <div className="column">
             
                     <TopNavigation/>
-                    <Routes/>
+                    <Routes userType={userType}/>
             
             </div>
                 

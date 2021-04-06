@@ -12,14 +12,22 @@ import Login from './Signin/Login/Login'
 import SpecialistProfile from './Specialist/SpecialistProfile'
 import Register from './Signin/Register/Register'
 
-const  Routes=()=>{
+const  Routes=({userType})=>{
     return (
             <Switch>
-                <Route exact path='/' component={Home}/>
-                <Route  path='/appointments' component={Appointments}/>
-                <Route  path='/messages' component={Messages}/>
-                <Route  path='/patients' component={Pacienti}/>
-                <Route  path='/specialist' component={Specialist}/>
+                <Route exact path='/' render={(props)=>(
+                    <Home {...props} userType={userType}/>
+                )}/>
+                <Route  path='/appointments' render={(props)=>(
+                    <Messages {...props} userType={userType}/>
+                )} component={Appointments}/>
+                <Route  path='/patients' render={(props)=>(
+                    <Pacienti {...props} userType={userType}/>
+                )}/>
+                <Route  path='/specialist' render={(props)=>(
+                    <Specialist {...props} userType={userType}/>
+                )}/>
+
                 <Route  path='/login' component={Login}/>
                 <Route path='/register' component={Register}/>
                 <Route path='/new-appointment' component={NewAppointment}/>

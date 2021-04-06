@@ -1,44 +1,78 @@
-import React,{useState} from 'react'
+import React,{useState,useEffect} from 'react'
 import AppointmentScheduled from './AppointmentScheduled'
+import { ScheduleComponent, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
+import { Internationalization, extend } from '@syncfusion/ej2-base';
 import './UpcomingAppointmentsWidget.css'
 
-const appointmentList=[
-    {
-        title:'Oculist',
-        desciption:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.'
+
+const scheduleList=[{
+    Id:0,
+    Subject: 'Oculist',
+    Name: 'Vasile',
+    StartTime:new Date(2021,3,5,16,0),
+    EndTime:new Date(2021,3,5,16,40),
+    Status:''
     },
     {
-        title:'Oftalmolog',
-        desciption:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.'
+    Id:1,
+    Subject: 'Oftalmolog',
+    Name: 'Alex',
+    StartTime:new Date(2021,3,6,15,0),
+    EndTime:new Date(2021,3,6,14,40) ,
+    Status:''  
     },
     {
-        title:'Oculist',
-        desciption:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.'
+        Id:2,
+        Subject: 'Oculist',
+        Name: 'Vasile',
+        StartTime:new Date(2021,6,5,16,0),
+        EndTime:new Date(2021,3,6,16,40),
+        Status:''   
     },
     {
-        title:'Oftalmolog',
-        desciption:'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean efficitur sit amet massa fringilla egestas. Nullam condimentum luctus turpis.'
+        Id:3,
+        Subject: 'Oftalmolog',
+        Name: 'Alex',
+        StartTime:new Date(2021,3,7,15,0),
+        EndTime:new Date(2021,3,7,14,40),
+        Status:''   
     }
-    
 ]
-const appointments=appointmentList.map((item,index)=>{
-    return (
-        <AppointmentScheduled key={index} title={item.title} description={item.desciption}/>
-    )
-})
+
+
 
 function UpcomingAppointmentsWidget() {
- 
+
+    const [status, setstatus] = useState(scheduleList)
+
+    
+    const appointments=scheduleList.map((item,index)=>{
+        const changeStatus=(value)=>{
+
+            let listCopy=[...scheduleList];
+            let IndexCopy={
+                ...listCopy[index],
+                Status:value
+            }
+            listCopy[index]=IndexCopy;
+            setstatus(listCopy)
+            
+        }
+        return (
+            <AppointmentScheduled key={item.Id} title={item.Subject} specialist={item.Name} date={[item.StartTime,item.EndTime]} status={changeStatus}/>
+        )
+    })
+
+    useEffect(()=>{
+        console.log(status)
+    },[status])
     return (
         <div className='container'>
             <nav className="panel is-info  mx-0">
                 <p className="panel-heading">
                     Upcoming Appointments
                 </p>
-                <ul className='menu-list p-0 m-0'>
-                    {appointments}
-                </ul>
-                
+                {appointments}
             </nav>
         </div>
         

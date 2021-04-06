@@ -1,4 +1,4 @@
-import React from 'react'
+import React,{useEffect,useState} from 'react'
 import Sidebar from '../../Components/Sidebar/Sidebar';
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import Statistics from '../../Components/Statistics/Statistics';
@@ -9,14 +9,16 @@ const data={
     nrOfPatients:3000,
     nrOfAppointments:1500
 }
-function Home() {
+function Home({userType}) {
     const {nrOfSpecialists,nrOfVisits,nrOfPatients,nrOfAppointments}=data;
+
     return (
         <div className="container is-fluid">
             <Statistics nrOfSpecialists={nrOfSpecialists}
                 nrOfVisits={nrOfVisits}
                 nrOfPatients={nrOfPatients}
                 nrOfAppointments={nrOfAppointments}
+                userType={userType}
             />
             
 

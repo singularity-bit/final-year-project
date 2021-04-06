@@ -1,8 +1,9 @@
 import React,{useState,useEffect} from 'react';
 
 function Login (props) {
-    const {onRouteChange}=props;
+    const {onRouteChange,userType}=props;
     const [targetRoute,setTargetRoute]=useState('login');
+    const [user, setUser] = useState();
     const [signInEmail, setsignInEmail] = useState('');
     const [signInPassword, setsignInPassword] = useState('');
     
@@ -31,9 +32,16 @@ function Login (props) {
     const onPasswordChange=(event)=>{
         setsignInPassword(event.target.value) 
     }
+
+    //update in main App route
     useEffect(()=>{
         onRouteChange(targetRoute);
     },[targetRoute]) 
+
+    //update in main App user type
+    useEffect(()=>{
+        userType(user)
+    },[user])
 
 
     const checkCredentials=()=>{
@@ -42,8 +50,9 @@ function Login (props) {
             return signInEmail===item.username & signInPassword===item.password
         })
         if(checkUser.length>0){
-            console.log(checkUser[0].userType)
-        }else alert("nu exista")       
+            setUser(checkUser[0].userType)
+            return true
+        }else {alert("nu exista"); return false}  
     }
         return(
             <section className="hero is-fullheight">
@@ -73,8 +82,10 @@ function Login (props) {
                                 </div>
                                             
                                 <button className="button is-block is-fullwidth is-primary mgt-small"
-                                    onClick={()=>checkCredentials()
-                                        /*setTargetRoute('home')*/}
+                                    onClick={()=>{checkCredentials() &&
+                                        setTargetRoute('home');
+                                    }
+                                        }
                                 >Sign in</button>
                             </form>            
                             <p className="has-text-grey has-text-centered">

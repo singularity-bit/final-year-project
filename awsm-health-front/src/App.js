@@ -13,31 +13,40 @@ function App() {
 
   const [route,setRoute]=useState('login');
   const [isSignedIn,setSignedIn]=useState(false);
-  const [userType,setUserType]=useState();
+  const [userType,setUserType]=useState('');
 
   const onRouteChange=(argument)=>{
     if(argument==='signout'){
       
       setSignedIn(false)
     }else if(argument==='home'){
+     
       setSignedIn(true);
     }
     setRoute(argument);
   }
-  
+
+  const onChangeUser=(argument)=>{
+    
+    setUserType(argument)
+    
+  }
+  useEffect(()=>{
+    console.log("from app "+userType)
+  },[userType])
     return (
       <div className="App">
         {
           route==='home'
           ?
-            <MainView onRouteChange={(argument)=>onRouteChange(argument)}/>
+            <MainView onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
 
           :(
             route==='register'
             ?
             <Register onRouteChange={(argument)=>onRouteChange(argument)}/>
             :
-            <Login onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
+            <Login onRouteChange={(argument)=>onRouteChange(argument)} userType={(argument)=>onChangeUser(argument)}/>
           )
           
         }

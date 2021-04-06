@@ -6,17 +6,14 @@
     transform: translateY(-5px) scale(1.000) translateZ(0);
 }
 
-.card-body{
+li{
+    list-style-type: none;
+    width: 100%;
+}
+a{
+    text-decoration: none
+}
+.menu-label.is-size-4.has-text-weight-bold.has-text-grey-darker{
+    border-right: 4px solid hsl(217, 71%, 45%);
+}
 
-    animation: Slide_down 0.3s  ease-in;
-}
-@keyframes Slide_down{
-    0%{
-        transform: translateY(-250px);
-        z-index: -1;
-    }
-    100%{
-        transform: translateY(0);
-        z-index: 1;
-    }
-}
