@@ -6,20 +6,20 @@ import './UpcomingAppointmentsWidget.css'
 
 
 const scheduleList=[{
-    Id:0,
-    Subject: 'Oculist',
-    Name: 'Vasile',
-    StartTime:new Date(2021,3,5,16,0),
-    EndTime:new Date(2021,3,5,16,40),
-    Status:''
+        Id:0,
+        Subject: 'Oculist',
+        Name: 'Vasile',
+        StartTime:new Date(2021,3,5,16,0),
+        EndTime:new Date(2021,3,5,16,40),
+        Status:'active'
     },
     {
-    Id:1,
-    Subject: 'Oftalmolog',
-    Name: 'Alex',
-    StartTime:new Date(2021,3,6,15,0),
-    EndTime:new Date(2021,3,6,14,40) ,
-    Status:''  
+        Id:1,
+        Subject: 'Oftalmolog',
+        Name: 'Alex',
+        StartTime:new Date(2021,3,6,15,0),
+        EndTime:new Date(2021,3,6,14,40) ,
+        Status:'active'  
     },
     {
         Id:2,
@@ -27,7 +27,7 @@ const scheduleList=[{
         Name: 'Vasile',
         StartTime:new Date(2021,6,5,16,0),
         EndTime:new Date(2021,3,6,16,40),
-        Status:''   
+        Status:'active'   
     },
     {
         Id:3,
@@ -35,7 +35,15 @@ const scheduleList=[{
         Name: 'Alex',
         StartTime:new Date(2021,3,7,15,0),
         EndTime:new Date(2021,3,7,14,40),
-        Status:''   
+        Status:'active'   
+    },
+    {
+        Id:4,
+        Subject: 'Oftalmolog',
+        Name:'bija',
+        StartTime:new Date(2021,6,5,16,0),
+        EndTime:new Date(2021,3,6,16,40),
+        Status:'active'   
     }
 ]
 
@@ -44,27 +52,36 @@ const scheduleList=[{
 function UpcomingAppointmentsWidget() {
 
     const [status, setstatus] = useState(scheduleList)
+    //const [listFiltered, setListFiltered] = useState(scheduleList)
 
-    
-    const appointments=scheduleList.map((item,index)=>{
-        const changeStatus=(value)=>{
-
-            let listCopy=[...scheduleList];
-            let IndexCopy={
-                ...listCopy[index],
-                Status:value
-            }
-            listCopy[index]=IndexCopy;
-            setstatus(listCopy)
-            
-        }
-        return (
-            <AppointmentScheduled key={item.Id} title={item.Subject} specialist={item.Name} date={[item.StartTime,item.EndTime]} status={changeStatus}/>
+    const filterAppointments =()=>{
+        return(
+            status.filter(item=>item.Status==='active').map((item,index)=>{
+                const changeStatus=(value)=>{
+        
+                    let listCopy=[...status];
+                    let IndexCopy={
+                        ...listCopy[index],
+                        Status:value
+                    }
+                    listCopy[index]=IndexCopy;
+                    
+                    setstatus(listCopy)
+                    
+                }                     
+                return (
+                    <AppointmentScheduled key={item.Id} title={item.Subject} specialist={item.Name} date={[item.StartTime,item.EndTime]} status={changeStatus}/>
+                )
+            })
         )
-    })
+    }
+        
 
     useEffect(()=>{
-        console.log(status)
+        console.log(status.filter(item=>item.Status==='active')) 
+        filterAppointments()
+        
+        
     },[status])
     return (
         <div className='container'>
@@ -72,7 +89,7 @@ function UpcomingAppointmentsWidget() {
                 <p className="panel-heading">
                     Upcoming Appointments
                 </p>
-                {appointments}
+                {filterAppointments()}
             </nav>
         </div>
         

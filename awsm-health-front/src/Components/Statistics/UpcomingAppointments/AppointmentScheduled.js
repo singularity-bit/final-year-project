@@ -16,8 +16,7 @@ function AppointmentScheduled(props) {
     //hook to change arrow icon when pressed
     const [isActive,setActive]=useState('');
 
-    const [removeAppointment, setRemoveAppointment] = useState();
-    const [finishAppointment, setfinishAppointment] = useState();
+    const [appointmentStatus, setappointmentStatus] = useState();
     //verify if card content it's collapsed
     const collapse=()=>{
         const isSelected=isOpen===true;
@@ -27,19 +26,16 @@ function AppointmentScheduled(props) {
 
     const changeStatus=(type)=>{
         if (type==='canceled'){
-            setRemoveAppointment(type);
+            setappointmentStatus(type);
         }else if (type==='finished'){
-            setfinishAppointment(type);
+            setappointmentStatus(type);
         }
     }
 
     useEffect(()=>{
-        status(removeAppointment)
-    },[removeAppointment])
+        status(appointmentStatus)
+    },[appointmentStatus])
 
-    useEffect(()=>{
-        status(finishAppointment)
-    },[finishAppointment])
     const subMenu=(date)=>{
         
         return (
@@ -63,6 +59,7 @@ function AppointmentScheduled(props) {
                     </li>
                 </ul>   
             </>   
+        
         )
     }
 
