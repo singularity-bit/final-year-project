@@ -19,12 +19,12 @@ export const SidebarData=[
         icon:<i className="fas fa-user-friends pr-5"/>,
         className:'pl-4' 
     },
-    {
+    /*{
         title:'Messages',
         path:'/messages',
         icon:<i className="fas fa-comments pr-5"/>,
         className:'pl-4'
-    },
+    },*/
     {
         title:'Appointments',
         path:'/appointments',

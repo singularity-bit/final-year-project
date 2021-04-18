@@ -1,7 +1,6 @@
 import React,{useState,useEffect} from 'react'
 import AppointmentScheduled from './AppointmentScheduled'
-import { ScheduleComponent, Agenda, Inject, ViewsDirective, ViewDirective } from '@syncfusion/ej2-react-schedule';
-import { Internationalization, extend } from '@syncfusion/ej2-base';
+
 import './UpcomingAppointmentsWidget.css'
 
 
@@ -52,44 +51,36 @@ const scheduleList=[{
 function UpcomingAppointmentsWidget() {
 
     const [status, setstatus] = useState(scheduleList)
-    //const [listFiltered, setListFiltered] = useState(scheduleList)
 
-    const filterAppointments =()=>{
-        return(
-            status.filter(item=>item.Status==='active').map((item,index)=>{
-                const changeStatus=(value)=>{
+    const filterAppointments =status.filter(item=>item.Status==='active').map((item)=>{
         
-                    let listCopy=[...status];
-                    let IndexCopy={
-                        ...listCopy[index],
-                        Status:value
-                    }
-                    listCopy[index]=IndexCopy;
-                    
-                    setstatus(listCopy)
-                    
-                }                     
-                return (
-                    <AppointmentScheduled key={item.Id} title={item.Subject} specialist={item.Name} date={[item.StartTime,item.EndTime]} status={changeStatus}/>
-                )
-            })
+        const changeStatus=(value)=>{
+            
+            let listCopy=[...status];
+            let IndexCopy={
+                ...listCopy[item.Id],
+                Status:value
+            }
+            listCopy[item.Id]=IndexCopy;           
+            setstatus(listCopy)     
+        }                     
+        return (
+            <AppointmentScheduled key={item.Id} title={item.Subject} specialist={item.Name} date={[item.StartTime,item.EndTime]} onchangeStatus={changeStatus} status={item.Status}/>
         )
-    }
-        
-
-    useEffect(()=>{
-        console.log(status.filter(item=>item.Status==='active')) 
-        filterAppointments()
-        
-        
-    },[status])
+    })   
+useEffect(()=>{
+    console.log(status)
+},[status])
     return (
         <div className='container'>
             <nav className="panel is-info  mx-0">
                 <p className="panel-heading">
                     Upcoming Appointments
                 </p>
-                {filterAppointments()}
+                
+                {filterAppointments}
+                
+                
             </nav>
         </div>
         

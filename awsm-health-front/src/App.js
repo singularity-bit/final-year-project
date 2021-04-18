@@ -1,11 +1,12 @@
 
 import 'bulma/css/bulma.css';
 import './App.css';
-import React, {useState,useEffect} from 'react';
+import React, {useState,useEffect,useContext} from 'react';
 import {Link} from 'react-router-dom'
 import Login from './Pages/Signin/Login/Login';
 import Register from './Pages/Signin/Register/Register';
 import MainView from './MainView';
+import {UserContext} from './UserContext'
 
 
 
@@ -19,8 +20,7 @@ function App() {
     if(argument==='signout'){
       
       setSignedIn(false)
-    }else if(argument==='home'){
-     
+    }else if(argument==='home'){    
       setSignedIn(true);
     }
     setRoute(argument);
@@ -39,7 +39,8 @@ function App() {
         {
           route==='home'
           ?
-            <MainView onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
+              <MainView onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
+            
 
           :(
             route==='register'

@@ -1,8 +1,9 @@
-import React,{useEffect, useState} from 'react'
+import React,{useEffect, useState,useContext} from 'react'
 import * as FaIcons from 'react-icons/fa';
 import {SidebarData} from './SidebarData';
 import {Link,BrowserRouter} from 'react-router-dom';
 import './Sidebar.css';
+import {UserContext} from '../../UserContext'
 
 
 
@@ -15,6 +16,7 @@ function Sidebar() {
     });
     const [isMobile, setMobile] = useState(false);
 
+    const userType=useContext(UserContext)
     useEffect(()=>{
         function handleResize() {
             setWindowSize({
@@ -33,6 +35,7 @@ function Sidebar() {
         if(windowSize.width<800){
             setMobile(true);
         }else setMobile(false)
+        
     },[windowSize.width]);
     const activeStyle='has-background-info-light';
     const defaultStyle='';
@@ -49,30 +52,61 @@ function Sidebar() {
     const menuItems=
         SidebarData.map((item,index)=>{
         
+        
         const isSelected=active===item.title;
-            return(
-                        <li key={index} 
-                            onClick={()=>{
-                                clickMenuHandler(item.title);
-                                activateClass(activeStyle);
-                                item.className=activeClass;
-                                }}
-                                
-                        >
-                            <Link to={item.path} key={index}                               
-                                    className={isSelected && item.className} 
+                    
+                        if(userType==='pacient'){
+                            if(item.title!=='Patients'){
+                                return(
+                                    <li key={index} 
+                                        onClick={()=>{
+                                            clickMenuHandler(item.title);
+                                            activateClass(activeStyle);
+                                            item.className=activeClass;
+                                            }}
+                                            
+                                    >
+                                        <Link to={item.path} key={index}                               
+                                                className={isSelected && item.className} 
+                                            >
+                                                <span className="icon-text ">
+                                                <span className="icon pl-4">
+                                                    <div>
+                                                        {item.icon}
+                                                    </div>
+                                                </span>
+                                                    <p className='is-hidden-touch'>{item.title}</p>
+                                                </span>           
+                                        </Link>                    
+                                    </li>      
+                                )     
+                            }
+                            
+                        }else {
+                            return(
+                                <li key={index} 
+                                    onClick={()=>{
+                                        clickMenuHandler(item.title);
+                                        activateClass(activeStyle);
+                                        item.className=activeClass;
+                                        }}
+                                        
                                 >
-                                    <span className="icon-text ">
-                                    <span className="icon pl-4">
-                                        <div>
-                                            {item.icon}
-                                        </div>
-                                    </span>
-                                        <p className='is-hidden-touch'>{item.title}</p>
-                                    </span>           
-                            </Link>                    
-                        </li>            
-            )
+                                    <Link to={item.path} key={index}                               
+                                            className={isSelected && item.className} 
+                                        >
+                                            <span className="icon-text ">
+                                            <span className="icon pl-4">
+                                                <div>
+                                                    {item.icon}
+                                                </div>
+                                            </span>
+                                                <p className='is-hidden-touch'>{item.title}</p>
+                                            </span>           
+                                    </Link>                    
+                                </li>      
+                            ) 
+                        }
         })
     return (
         <>

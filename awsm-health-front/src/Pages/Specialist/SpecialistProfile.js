@@ -1,14 +1,13 @@
-import React, { useEffect,useState } from 'react'
+import React, { useEffect,useState ,useContext} from 'react'
 import {useLocation} from 'react-router-dom'
 import './SpecialistProfile.css'
 import SpecialistData from '../../Components/Specialist/SpecialistData'
+import {UserContext} from '../../UserContext'
+import Appointments from '../Appointments/Appointments'
 function SpecialistProfile({match}) {
-
+    const userType=useContext(UserContext)
     const [activeTab,setActiveTab]=useState('profile');
 
-    useEffect(()=>{
-
-    },[])
     return (
         
         <>
@@ -34,16 +33,21 @@ function SpecialistProfile({match}) {
                         <a  onClick={()=>setActiveTab('profile')} className={activeTab=='profile'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}>Profile info</a>
                         <a  onClick={()=>setActiveTab('appointments')} className={activeTab=='appointments'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}>Appointments</a>
                     </div> 
-                    <div className='is-flex is-justify-content-flex-end is-pulled-right sub-menu-icons'>
-                        <a className={"px-3 has-text-grey is-pulled-right"} onClick={()=>setActiveTab('call')}> <i className="fas fa-phone-square-alt fa-2x "/></a>
-                        <a className={"px-3 has-text-grey is-pulled-right "} onClick={()=>setActiveTab('message')}><i className="fas fa-comment-alt fa-2x"/></a>
-                    </div>
+                    {userType!=='medic' &&
+                        <div className='is-flex is-justify-content-flex-end is-pulled-right sub-menu-icons'>
+                        <a  onClick={()=>setActiveTab('app')} className={activeTab=='app'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}> <i className="fas fa-calendar-plus fa-2x "/> </a>
+                        </div>
+                    }
+                    
                         
                     
                 </div>
 
                 {
                     activeTab=='profile' && <SpecialistData userData={match.params}/>
+                }
+                {
+                    activeTab=='appointments' && <Appointments/>
                 }
                                 
             </div>

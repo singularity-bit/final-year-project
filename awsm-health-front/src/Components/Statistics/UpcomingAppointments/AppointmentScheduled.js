@@ -2,7 +2,8 @@ import React,{useState,useEffect, useRef} from 'react'
 import './AppointmentScheduled.css'
 function AppointmentScheduled(props) {
     //props
-    const {title,date,specialist,status}=props
+    const {title,date,specialist,status,onchangeStatus}=props
+    
     const options = { month: 'long', day: 'numeric' };
     const optionsHour={hour:'numeric',minute: 'numeric'}
     const startDate= date[0].toLocaleDateString(undefined, options);
@@ -16,7 +17,7 @@ function AppointmentScheduled(props) {
     //hook to change arrow icon when pressed
     const [isActive,setActive]=useState('');
 
-    const [appointmentStatus, setappointmentStatus] = useState();
+    const [appointmentStatus, setappointmentStatus] = useState(status);
     //verify if card content it's collapsed
     const collapse=()=>{
         const isSelected=isOpen===true;
@@ -31,12 +32,11 @@ function AppointmentScheduled(props) {
             setappointmentStatus(type);
         }
     }
+useEffect(()=>{
+    onchangeStatus(appointmentStatus);
+},[appointmentStatus])
 
-    useEffect(()=>{
-        status(appointmentStatus)
-    },[appointmentStatus])
-
-    const subMenu=(date)=>{
+    const subMenu=()=>{
         
         return (
             <>
@@ -77,7 +77,7 @@ function AppointmentScheduled(props) {
                     
                 </a>
                 {
-                    collapse()&&subMenu(date)
+                    collapse()&&subMenu()
                 }
 
             </li>

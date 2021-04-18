@@ -1,6 +1,55 @@
-import React from 'react'
+import React,{useContext,useState,useEffect} from 'react'
 import './NewAppointment.css'
+import {CategoryContext,SpecialistContext} from '../Specialist/CategoryContext'
 function NewAppointment() {
+    const category=useContext(CategoryContext)
+    const specialist=useContext(SpecialistContext)
+    const [activeCategory, setActiveCategory] = useState('')
+    const [activeSpecialists, setactiveSpecialist] = useState([])
+    const [selectSpecialist, setselectSpecialist] = useState({})
+
+    const onChangeCategory=(e)=>{
+        setActiveCategory(e)
+        
+    }
+    const onChangeSpecialist=(e)=>{
+        const listCopy=[...activeSpecialists].filter(item=>{
+            return item.name===e 
+        })
+        setselectSpecialist(listCopy)
+
+    }
+    const categoryList=category.map((item,index)=>{  
+            return (
+            <option key={index} value={item}>{item}</option>
+            )
+    })
+
+    const specialistList=activeSpecialists.map((item)=>{
+        return <option key={item.id} value={item.name}>{item.name}</option>;
+    })
+
+    const servicesList=selectSpecialist[0].service.map((item,index)=>{
+        return <option key={index} value={item.serviceName}>{item.serviceName}</option>;
+    })
+
+    useEffect(() => {
+        const listCopy=[...specialist].filter(item=>{
+            return item.category===activeCategory 
+        })
+        
+        setactiveSpecialist(listCopy)
+        console.log("category ",activeCategory)
+        console.log("spec ",listCopy)
+    }, [activeCategory]) 
+
+    useEffect(()=>{
+        
+        selectSpecialist[0].service.map((item,i)=>{
+            console.log(item.serviceName)
+        })
+    },[selectSpecialist])
+    
     return (
         <article className='panel is-primary my-6 '>
             <p class="panel-heading">
@@ -9,41 +58,62 @@ function NewAppointment() {
             <p className='panel-block'>
                 <p className='control'>
                 <div className="field is-horizontal ">
+                    
                     <div className="field-label is-normal">
-                        <label className="label">From</label>
+                        <label className="label">Nume</label>
                     </div>
                     <div className="field-body">
                         <div className="field">
-                        <p className="control is-expanded has-icons-left">
+                        <p className="control has-icons-left">
                             <input className="input" type="text" placeholder="Name"/>
                             <span className="icon is-small is-left">
                             <i className="fas fa-user"></i>
                             </span>
                         </p>
                         </div>
+                    </div>            
+                    <div className="field-label is-normal">
+                        <label className="label">Prenume</label>
+                    </div>
+                    <div className="field-body">
                         <div className="field">
-                        <p className="control is-expanded has-icons-left has-icons-right">
-                            <input className="input is-success" type="email" placeholder="Email" value="alex@smith.com"/>
+                        <p className="control has-icons-left">
+                            <input className="input" type="text" placeholder="prenume"/>
                             <span className="icon is-small is-left">
-                            <i className="fas fa-envelope"></i>
-                            </span>
-                            <span className="icon is-small is-right">
-                            <i className="fas fa-check"></i>
+                            <i className="fas fa-user"></i>
                             </span>
                         </p>
                         </div>
                     </div>
-                    </div>
+                </div>
                 </p>
                 
             </p>
             <p className='panel-block'>
                 <p className='control'>
                 <div className="field is-horizontal ">
-                <div className="field-label"></div>
+                <div className="field-label"><label className="label">email</label></div>
                 <div className="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input is-success" type="email" placeholder="Email"/>
+                        <span class="icon is-small is-left">
+                        <i class="fas fa-envelope"></i>
+                        </span>
+                        <span class="icon is-small is-right">
+                        <i class="fas fa-check"></i>
+                        </span>
+                    </p>
+                </div>
+
+
+                <div className="field-label is-normal">
+                    <label class="label">Nr</label>
+                    </div> 
                     <div className="field is-expanded">
                     <div className="field has-addons">
+                    
+                    
                         <p className="control">
                         <a className="button is-static">
                             +44
@@ -52,8 +122,7 @@ function NewAppointment() {
                         <p className="control is-expanded">
                         <input className="input" type="tel" placeholder="Your phone number"/>
                         </p>
-                    </div>
-                    <p className="help">Do not enter the first zero</p>
+                    </div>                 
                     </div>
                 </div>
                 </div>
@@ -65,49 +134,62 @@ function NewAppointment() {
                 <p className='control'>
                 <div className="field is-horizontal ">
                 <div className="field-label is-normal">
-                    <label className="label">Department</label>
+                    <label className="label">Category</label>
                 </div>
                 <div className="field-body">
                     <div className="field is-narrow">
                     <div className="control">
                         <div className="select is-fullwidth">
-                        <select>
-                            <option>Business development</option>
-                            <option>Marketing</option>
-                            <option>Sales</option>
+                        <select onChange={(e)=>onChangeCategory(e.target.value)}>
+                            {categoryList}
+                        </select>
+                        </div>
+                    </div>
+                    </div>
+                    <p className='control'>
+                <div className="field is-horizontal ">
+                <div className="field-label is-normal">
+                    <label className="label">Choose Specialist</label>
+                </div>
+                <div className="field-body">
+                    <div className="field is-narrow">
+                    <div className="control">
+                        <div className="select is-fullwidth">
+                        <select  onChange={(e)=>onChangeSpecialist(e.target.value)}>
+                            {specialistList}
                         </select>
                         </div>
                     </div>
                     </div>
                 </div>
                 </div>
-                </p>
-               
-            </p>
-
-            <p className='panel-block'>
+                </p>  
                 <p className='control'>
-                <div className="field is-horizontal">
-                    <div className="field-label">
-                        <label className="label">Already a member?</label>
+                    <div className='field is-horizontal'>
+                    <div className="field-label is-normal">
+                        <label className="label">Choose service</label>
                     </div>
                     <div className="field-body">
                         <div className="field is-narrow">
                         <div className="control">
-                            <label className="radio">
-                            <input type="radio" name="member"/>
-                            Yes
-                            </label>
-                            <label className="radio">
-                            <input type="radio" name="member"/>
-                            No
-                            </label>
+                            <div className="select is-fullwidth">
+                            <select>
+                                {servicesList}
+                            </select>
+                            </div>
                         </div>
                         </div>
                     </div>
-                    </div>
+                    </div> 
                 </p>
+                </div>
+                </div>
+                </p>              
+            </p>
+
+            <p className='panel-block'>
                 
+                           
             </p>
 
             <p className='panel-block'>

@@ -1,20 +1,21 @@
-import React from 'react';
+import React,{useContext} from 'react';
 import './Statistics.css';
 import {Link} from 'react-router-dom'
 import Chart from './Chart'
 import UpcomingAppointmentsWidget from './UpcomingAppointments/UpcomingAppointmentsWidget'
-const text='Suspendisse varius ligula in molestie lacinia. Maecenas varius eget ligula a sagittis. Pellentesque interdum, nisl nec interdum maximus, augue diam porttitor lorem, et sollicitudin felis neque sit amet erat. Maecenas imperdiet felis nisi, fringilla luctus felis hendrerit sit amet. Aenean vitae gravida diam, finibus dignissim turpis. Sed eget varius ligula, at volutpat tortor';
+import {UserContext} from '../../UserContext'
 
 
 function Statistics(props) {
-    const {nrOfSpecialists,nrOfVisits,nrOfPatients,nrOfAppointments,userType}=props;
+    const userType=useContext(UserContext)
+    const {nrOfSpecialists,nrOfVisits,nrOfPatients,nrOfAppointments}=props;
     return (
         <div>
             
                 
                 <div className='is-flex is-justify-content-space-between is-flex-wrap-wrap py-5'>
                     <h4 class="title is-4 has-text-grey-dark">Overview</h4>
-                    {userType==='pacient' &&
+                    {userType==='pacient' | userType==='admin' &&
                         <Link to='/new-appointment'>
                             <button className="button is-link  ">New appointment</button>
                         </Link>

@@ -1,7 +1,6 @@
 import React,{useState,useEffect,useRef} from 'react'
 import SpecialistCard from '../../Components/SpecialistCard/SpecialistCard'
 import useComponentVisible from '../../Components/useComponentVisible'
-
 import DropDown from '../../Components/DropDown/DropDown'
 
 //const activeTags=new Set();
