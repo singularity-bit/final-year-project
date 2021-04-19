@@ -3,7 +3,7 @@ import {Switch,Route, BrowserRouter} from 'react-router-dom';
 
 //components
 import Home from './Home/Home'
-import Appointments from './Appointments/Appointments'
+import Appointment from './Appointments/Appointments'
 import Messages from './Messages/Messages'
 import Pacienti from './Pacienti/Pacienti'
 import Specialist from './Specialist/Specialist'
@@ -156,7 +156,7 @@ const  Routes=({userType})=>{
                         )}/>
                         <Route  path='/appointments' render={(props)=>(
                             <Messages {...props}/>
-                        )} component={Appointments}/>
+                        )} component={Appointment}/>
                         <Route  path='/patients' render={(props)=>(
                             <Pacienti {...props}/>
                         )}/>

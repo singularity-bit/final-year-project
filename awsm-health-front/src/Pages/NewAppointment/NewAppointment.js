@@ -6,7 +6,9 @@ function NewAppointment() {
     const specialist=useContext(SpecialistContext)
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSpecialists, setactiveSpecialist] = useState([])
-    const [selectSpecialist, setselectSpecialist] = useState({})
+    const [selectSpecialist, setselectSpecialist] = useState([])
+    const [activeService, setactiveService] = useState([])
+    const [totalPrice, settotalPrice] = useState(0)
 
     const onChangeCategory=(e)=>{
         setActiveCategory(e)
@@ -19,6 +21,14 @@ function NewAppointment() {
         setselectSpecialist(listCopy)
 
     }
+    const onChangeService=(e)=>{
+            
+            const result=activeService.find((item)=>item===e)
+            result===undefined?setactiveService([...activeService,e]):
+            setactiveService(activeService.filter(item=>{return item!==e}))
+            
+            
+    }
     const categoryList=category.map((item,index)=>{  
             return (
             <option key={index} value={item}>{item}</option>
@@ -29,7 +39,8 @@ function NewAppointment() {
         return <option key={item.id} value={item.name}>{item.name}</option>;
     })
 
-    const servicesList=selectSpecialist[0].service.map((item,index)=>{
+    const servicesList=
+        selectSpecialist[0]?.service?.map((item,index)=>{
         return <option key={index} value={item.serviceName}>{item.serviceName}</option>;
     })
 
@@ -43,12 +54,23 @@ function NewAppointment() {
         console.log("spec ",listCopy)
     }, [activeCategory]) 
 
+
     useEffect(()=>{
-        
-        selectSpecialist[0].service.map((item,i)=>{
-            console.log(item.serviceName)
+        var sum=0
+        const temp=selectSpecialist[0]?.service?.filter((item,index)=>{
+            return item.serviceName===activeService.find((i)=>i===item.serviceName)
         })
-    },[selectSpecialist])
+        
+        temp?.forEach((i)=>{
+            
+            var price=i.servicePrice
+            var priceInt=parseInt(price,10)
+            sum=sum+priceInt
+            
+        })
+        settotalPrice(sum)
+ 
+    },[activeService])
     
     return (
         <article className='panel is-primary my-6 '>
@@ -173,7 +195,7 @@ function NewAppointment() {
                         <div className="field is-narrow">
                         <div className="control">
                             <div className="select is-fullwidth">
-                            <select>
+                            <select onChange={(e)=>onChangeService(e.target.value)}>
                                 {servicesList}
                             </select>
                             </div>
@@ -233,17 +255,20 @@ function NewAppointment() {
             <p className='panel-block'>
             <p className='control'>
             <div className="field is-horizontal block">
-                <div className="field-label">
-                    
-                </div>
+                
                 <div className="field-body">
-                    <div className="field">
+                    <div className="field is-narrow">
                     <div className="control">
                         <button className="button is-primary">
                         Send message
                         </button>
                     </div>
                     </div>
+                </div>
+                <div className="field-label">
+                    Total de plata: {<span>{totalPrice}</span>} {activeService.map((item,index)=>{
+                        return <p className="has-text-weight-medium"> {item}</p>
+                    })}
                 </div>
                 </div>
             </p>
