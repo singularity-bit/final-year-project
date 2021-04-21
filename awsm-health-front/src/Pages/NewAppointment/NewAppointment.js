@@ -1,14 +1,20 @@
 import React,{useContext,useState,useEffect} from 'react'
 import './NewAppointment.css'
 import {CategoryContext,SpecialistContext} from '../Specialist/CategoryContext'
+import SelectDate from './SelectDate'
+import {UserContext} from '../../UserContext'
 function NewAppointment() {
+
     const category=useContext(CategoryContext)
     const specialist=useContext(SpecialistContext)
+    const userType=useContext(UserContext)
+
     const [activeCategory, setActiveCategory] = useState('')
     const [activeSpecialists, setactiveSpecialist] = useState([])
     const [selectSpecialist, setselectSpecialist] = useState([])
     const [activeService, setactiveService] = useState([])
     const [totalPrice, settotalPrice] = useState(0)
+    const [calendarisOpened, setcalendarisOpened] = useState(false)
 
     const onChangeCategory=(e)=>{
         setActiveCategory(e)
@@ -28,6 +34,9 @@ function NewAppointment() {
             setactiveService(activeService.filter(item=>{return item!==e}))
             
             
+    }
+    const handleDatePick=()=>{
+        setcalendarisOpened(!calendarisOpened)
     }
     const categoryList=category.map((item,index)=>{  
             return (
@@ -68,8 +77,7 @@ function NewAppointment() {
             sum=sum+priceInt
             
         })
-        settotalPrice(sum)
- 
+        settotalPrice(sum) 
     },[activeService])
     
     return (
@@ -77,7 +85,9 @@ function NewAppointment() {
             <p class="panel-heading">
                 Create new appointment
             </p>
-            <p className='panel-block'>
+            {userType==='admin' &&
+                <>
+                <p className='panel-block'>
                 <p className='control'>
                 <div className="field is-horizontal ">
                     
@@ -151,6 +161,9 @@ function NewAppointment() {
                 </p>
                 
             </p>
+            </>
+            }
+            
             
             <p className='panel-block'>
                 <p className='control'>
@@ -210,8 +223,27 @@ function NewAppointment() {
             </p>
 
             <p className='panel-block'>
-                
-                           
+                <p className='control'>
+                    <div className="field is-horizontal">
+                        <div className="field-label is-normal">
+                            <label className="label">Select date</label>
+                        </div>
+                        <div className="field-body">
+                            <div className="field is-narrow">
+                                <div className="control">
+                                <button className="button" onClick={()=>handleDatePick()}>
+                                    <span className="icon">
+                                    <i className="fas fa-calendar-alt"></i>
+                                    </span>
+                                    <span>click me</span>
+                                </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    
+                </p>                          
             </p>
 
             <p className='panel-block'>
@@ -233,25 +265,7 @@ function NewAppointment() {
                     </div>
                 </p>
                 
-            </p>    
-                
-            <p className='panel-block'>
-            <p className='control'>
-            <div className="field is-horizontal block">
-                <div className="field-label is-normal">
-                    <label className="label">Question</label>
-                </div>
-                <div className="field-body">
-                    <div className="field">
-                    <div className="control">
-                        <textarea className="textarea" placeholder="Explain how we can help you"></textarea>
-                    </div>
-                    </div>
-                </div>
-                </div>
-            </p>
-            
-            </p>              
+            </p>               
             <p className='panel-block'>
             <p className='control'>
             <div className="field is-horizontal block">
@@ -274,7 +288,26 @@ function NewAppointment() {
             </p>
            
             </p>
-                
+            {calendarisOpened && 
+                    <div className="modal is-active">
+                        <div className="modal-background"></div>
+                        <div className="modal-card">
+                            <header className="modal-card-head">
+                                <p className="modal-card-title">Select one free day</p>
+                                
+                            </header>
+                            <section className="modal-card-body">
+                                <SelectDate/>
+                            </section>
+                            <footer className="modal-card-foot">
+                                <button className="button is-success">Save changes</button>
+                                <button className="button">Cancel</button>
+                            </footer>
+                            
+                        </div>
+                        <button className="modal-close is-large" aria-label="close" onClick={()=>setcalendarisOpened(!calendarisOpened)}></button>
+                    </div>  
+            } 
         </article>
     )
 }
