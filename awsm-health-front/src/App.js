@@ -2,11 +2,11 @@
 import 'bulma/css/bulma.css';
 import './App.css';
 import React, {useState,useEffect,useContext} from 'react';
-import {Link} from 'react-router-dom'
+
 import Login from './Pages/Signin/Login/Login';
 import Register from './Pages/Signin/Register/Register';
 import MainView from './MainView';
-import {UserContext} from './UserContext'
+
 
 
 

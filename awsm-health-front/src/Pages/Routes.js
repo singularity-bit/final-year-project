@@ -6,6 +6,7 @@ import Home from './Home/Home'
 import Appointment from './Appointments/Appointments'
 import Messages from './Messages/Messages'
 import Pacienti from './Pacienti/Pacienti'
+import PacientProfile from './Pacienti/PacientProfile'
 import Specialist from './Specialist/Specialist'
 import NewAppointment from './NewAppointment/NewAppointment'
 import Login from './Signin/Login/Login'
@@ -174,6 +175,7 @@ const  Routes=({userType})=>{
                         </CategoryContext.Provider>
                         
                         <Route path='/profile/:id/:name/:category'  component={SpecialistProfile}/>
+                        <Route path='/pacient/:id/:name/'  component={PacientProfile}/>
                 </UserContext.Provider>
                     
                 

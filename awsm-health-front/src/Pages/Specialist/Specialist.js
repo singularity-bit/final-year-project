@@ -1,58 +1,15 @@
 import React,{useState,useEffect,useRef} from 'react'
+import axios from 'axios'
 import SpecialistCard from '../../Components/SpecialistCard/SpecialistCard'
 import useComponentVisible from '../../Components/useComponentVisible'
 import DropDown from '../../Components/DropDown/DropDown'
 
 //const activeTags=new Set();
 function Specialist() {
-    const specialistTypes=['oculist','oftalmolog','chirurg','dermatolog'];
     
-    const specialistList=[
-        {
-            id:0,
-            name:'Vasile',
-            category: 'oculist',
-            rating:3
-        },
-        {
-            id:1,
-            name:'Alex',
-            category: 'oftalmolog',
-            rating:3
-        },
-        {
-            id:2,
-            name:'Ion',
-            category: 'chirurg',
-            rating:3
-        },
-        {
-            id:3,
-            name:'Maria',
-            category: 'dermatolog',
-            rating:3
-        }
-        ,
-        {
-            id:4,
-            name:'bija',
-            category: 'oftalmolog',
-            rating:3
-        },
-        {
-            id:5,
-            name:'dulghieru',
-            category: 'chirurg',
-            rating:3
-        },
-        {
-            id:6,
-            name:'pusia',
-            category: 'dermatolog',
-            rating:3
-        }
-    ]
-
+    
+    const [specialists, setspecialists] = useState()
+    const specialistTypes=Array.from(new Set(specialists?.map(item=>{return item.category})))
     //hooks for filtering
     const [listOfFilters,setListOfFilters]=useState(new Set());
 
@@ -63,9 +20,12 @@ function Specialist() {
     //on page load display all specialist
     useEffect(()=>{
         removeAllFilters();
-        [...specialistList].forEach(obj=>obj.isHovered=false)
-        //console.log(JSON.stringify(specialistListExpanded))
+        axios.get('http://localhost:3000/specialists').then(res=>{
+        const data=res.data;
+        setspecialists(data)
         
+    })
+    console.log("specialist: ",specialists)
     },[])
 
     const displayTags=Array.from(listOfFilters).map((item,index)=>{
@@ -113,7 +73,7 @@ function Specialist() {
                 {/*specialist cards */}
 
                 <div className='columns is-multiline  pt-5'>
-                    <SpecialistCard data={[...specialistList]} filter={listOfFilters}/>
+                    <SpecialistCard data={specialists} filter={listOfFilters}/>
                 </div>
         </div>
     )

@@ -6,22 +6,22 @@ function SpecialistCard(props) {
 
     //hooks
 
-
     const {data,filter}=props;
 
-    const displaySpecialist=data.filter((item,index)=>{    
+    const displaySpecialist=data?.filter((item)=>{    
         
-        return filter.size===0?data:filter.has(item.category)
+        return filter?.size===0?data:filter?.has(item.category)
     })
     
 
 
-    const specialistList=displaySpecialist.map((item,index)=>{
-        const {name,category}=item;
+
+    const specialistList=displaySpecialist?.map((item,index)=>{
+        const {prenume_medic,category}=item;
         return(
-            <div className='column is-one-quarter' key={index}>
+            <div className='column is-one-quarter' key={item.Id}>
                     <div className='block'>
-                        <Link to={`profile/${item.id}/${item.name}/${item.category}`}>
+                        <Link to={`profile/${item.id}/${item.prenume_medic}/${item.category}`}>
                             <div  className="card">
                                 <div className="card-content ">
                                     <div className="is-flex-direction-column is-justify-content-center">
@@ -31,7 +31,7 @@ function SpecialistCard(props) {
                                         </figure>
                                     </div>
                                     <div className="card-details has-text-centered">
-                                        <p className="title is-4">{name}</p>
+                                        <p className="title is-4">{prenume_medic}</p>
                                         <p className="subtitle is-6 has-text-link">{category}</p>
                                     </div>
                                     </div>
