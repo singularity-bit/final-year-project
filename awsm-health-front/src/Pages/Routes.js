@@ -175,7 +175,7 @@ const  Routes=({userType})=>{
                         </CategoryContext.Provider>
                         
                         <Route path='/profile/:id/:name/:category'  component={SpecialistProfile}/>
-                        <Route path='/pacient/:id/:name/'  component={PacientProfile}/>
+                        <Route path='/pacient/:id'  component={PacientProfile}/>
                 </UserContext.Provider>
                     
                 

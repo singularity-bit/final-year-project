@@ -56,7 +56,7 @@ function Sidebar() {
         const isSelected=active===item.title;
                     
                         if(userType==='pacient'){
-                            if(item.title!=='Patients'){
+                            if(item.title!=='Patients' & item.title!=='Appointments'){
                                 return(
                                     <li key={index} 
                                         onClick={()=>{
@@ -82,7 +82,33 @@ function Sidebar() {
                                 )     
                             }
                             
-                        }else {
+                        }else if(userType==='medic'){
+                            if(item.title!=='Patients' & item.title!=='Appointments'){
+                                return(
+                                    <li key={index} 
+                                        onClick={()=>{
+                                            clickMenuHandler(item.title);
+                                            activateClass(activeStyle);
+                                            item.className=activeClass;
+                                            }}
+                                            
+                                    >
+                                        <Link to={item.path} key={index}                               
+                                                className={isSelected && item.className} 
+                                            >
+                                                <span className="icon-text ">
+                                                <span className="icon pl-4">
+                                                    <div>
+                                                        {item.icon}
+                                                    </div>
+                                                </span>
+                                                    <p className='is-hidden-touch'>{item.title}</p>
+                                                </span>           
+                                        </Link>                    
+                                    </li>      
+                                ) 
+                            }
+                        }else{
                             return(
                                 <li key={index} 
                                     onClick={()=>{

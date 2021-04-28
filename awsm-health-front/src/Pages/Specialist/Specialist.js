@@ -21,8 +21,7 @@ function Specialist() {
     useEffect(()=>{
         removeAllFilters();
         axios.get('http://localhost:3000/specialists').then(res=>{
-        const data=res.data;
-        setspecialists(data)
+        setspecialists(res.data)
         
     })
     console.log("specialist: ",specialists)

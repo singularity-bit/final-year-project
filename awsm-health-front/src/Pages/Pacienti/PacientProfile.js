@@ -1,13 +1,37 @@
 import React, { useEffect,useState ,useContext} from 'react'
-//import './SpecialistProfile.css'
-import SpecialistData from '../../Components/Specialist/SpecialistData'
+import { Redirect } from "react-router-dom";
+import axios from 'axios'
 import {UserContext} from '../../UserContext'
 import Appointments from '../Appointments/Appointments'
-
+import PacientData from './PacientData'
 function PacientProfile({match}) {
     const userType=useContext(UserContext)
+    const [userData, setuserData] = useState([])
     const [activeTab,setActiveTab]=useState('profile');
+    const [enableInput,setEnableInput] = useState(false)
+    const [modal, setmodal] = useState(false)
 
+    useEffect(()=>{
+        axios.get(`http://localhost:3000/pacienti/${match.params.id}`).then(res=>{
+            setuserData(res.data); 
+        })
+    },[])
+
+    const numePacient=userData?.map(item=>{
+        return <p className="title is-4" key={item.id}>{item.nume_pacient} {item.prenume_pacient}</p>
+    })
+
+    const toggleButtons=(value)=>{
+        setEnableInput(value);
+    }
+    const deleteRequest=()=>{
+        axios.delete('http://localhost:3000/delete',{data:{id:userData[0].id}})
+            .then(res=>{
+            console.log(res);
+            <Redirect push to="/patients" />
+            setmodal(!modal);
+        })
+    }
     return (
         
         <>
@@ -20,11 +44,29 @@ function PacientProfile({match}) {
                     </div>
                     <div className="px-4">
                         <h1 className="is-size-2  has-text-black">
-                            {match.params.name}              
+                            { numePacient}           
                         </h1>
-                        <h1 className="is-size-4  has-text-link ">
-                            {match.params.category}
-                        </h1>
+                        {userType==='admin' &&
+                            <div className="buttons mt-3">
+                            <button class="button is-warning" onClick={()=>setEnableInput(!enableInput)}>Modify user data</button>
+                            <button class="button is-danger" onClick={()=>setmodal(!modal)} >Delete User</button>
+                            </div>
+                            
+                        }
+                        {modal && 
+                                <div className="modal is-active">
+                                <div className="modal-background"></div>
+                                <div className="modal-card">
+                                    <section className="modal-card-body">
+                                    <p>Are you sure you want to delete {numePacient}</p>
+                                    </section>
+                                    <footer className="modal-card-foot">
+                                    <button className="button is-success"onClick={()=>deleteRequest()}>Delete</button>
+                                    <button className="button" onClick={()=>setmodal(!modal)}>Cancel</button>
+                                    </footer>
+                                </div>
+                                </div>
+                        }
                     </div>
                 </div>
 
@@ -44,7 +86,7 @@ function PacientProfile({match}) {
                 </div>
 
                 {
-                    activeTab=='profile' && <SpecialistData userData={match.params}/>
+                    activeTab=='profile' & userData.length>0 && <PacientData userData={userData} enableInput={enableInput} toggler={toggleButtons}/>
                 }
                 {
                     activeTab=='appointments' && <Appointments/>

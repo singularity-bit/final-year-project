@@ -25,6 +25,12 @@ function SpecialistProfile({match}) {
                         <h1 className="is-size-4  has-text-link ">
                             {match.params.category}
                         </h1>
+                        {userType==='admin' &&
+                            <div className="buttons mt-3">
+                            <button class="button is-warning">Modify user data</button>
+                            <button class="button is-danger">Delete User</button>
+                            </div>
+                        }
                     </div>
                 </div>
 
