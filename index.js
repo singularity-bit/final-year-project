@@ -34,7 +34,6 @@ const upcomingAppoinments = db.select(
 .where('status','=','active')
 .orderBy('appointments.startDate','desc')
 
-
 app.use(bodyParser.json());
 app.use(cors());
 
@@ -48,23 +47,25 @@ app.get('/upcoming-appoinments',(req,res)=>{
     upcomingAppoinments.then(result=>res.json(result)).catch(err=>res.json(err));
 })
 
-app.put('/update-appointments',(req,res)=>{
 
-    const {id,status}=req.body;
-    db('appointments').where('id','=',`${id}`)
-    .update({status:status}).catch(err=>res.json(err));
-    
-    upcomingAppoinments.then(result=>res.json(result)).catch(err=>res.json(err));
-    
-})
 
 app.get('/specialists',(req,res)=>{
-    db('medici').returning('*').then(medic=>res.json(medic)).catch(err=>res.json(err));
+    db.select('*').from('medici').then(medic=>res.json(medic)).catch(err=>res.json(err));
     
 })
 
 app.get('/specialist-profile',(req,res)=>{
 
+})
+
+app.get('/pacienti',(req,res)=>{
+    db('pacienti').returning('*').then(pacient=>res.json(pacient)).catch(err=>err)
+})
+
+app.get('/pacienti/:id',(req,res)=>{
+    const id=req.params.id
+    
+    db('pacienti').returning('*').where('id','=',id).then(pacient=>res.json(pacient)).catch(err=>err)
 })
 
 app.post('/signin',(req, res) => {
@@ -76,6 +77,15 @@ app.post('/signin',(req, res) => {
     res.json("signin")
 })
 
+app.put('/update-appointments',(req,res)=>{
+
+    const {id,status}=req.body;
+    db('appointments').where('id','=',`${id}`)
+    .update({status:status}).catch(err=>res.json(err));
+    
+    upcomingAppoinments.then(result=>res.json(result)).catch(err=>res.json(err));
+    
+})
 app.post('/register',(req, res) =>{
     const {email,name,password}=req.body;
     users.db.users.push({
@@ -85,6 +95,15 @@ app.post('/register',(req, res) =>{
         password:password
     })
     res.json(users.db.users[users.db.users.length-1]);
+})
+
+app.delete('/delete',(req,res)=>{
+    const {id}=req.body;
+    db('pacienti').where({id}).del().then(result=>res.json(result)).catch(err=>res.json(err));
+})
+app.put('/change-user',(req,res)=>{
+    const {id}=req.body;
+    db('pacienti').where({id}).update(req.body).then(result=>res.json(result)).catch(err=>res.json(err));
 })
 
 app.listen(3000);
