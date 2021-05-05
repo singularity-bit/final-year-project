@@ -1,5 +1,5 @@
 import React, { useEffect,useState ,useContext} from 'react'
-import { Redirect } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import axios from 'axios'
 import {UserContext} from '../../UserContext'
 import Appointments from '../Appointments/Appointments'
@@ -11,24 +11,24 @@ function PacientProfile({match}) {
     const [enableInput,setEnableInput] = useState(false)
     const [modal, setmodal] = useState(false)
 
+    let redirect=useHistory();
     useEffect(()=>{
         axios.get(`http://localhost:3000/pacienti/${match.params.id}`).then(res=>{
             setuserData(res.data); 
         })
     },[])
 
-    const numePacient=userData?.map(item=>{
-        return <p className="title is-4" key={item.id}>{item.nume_pacient} {item.prenume_pacient}</p>
-    })
-
     const toggleButtons=(value)=>{
         setEnableInput(value);
     }
     const deleteRequest=()=>{
-        axios.delete('http://localhost:3000/delete',{data:{id:userData[0].id}})
+        axios.delete('http://localhost:3000/delete',{data:{
+            id:userData[0].id,
+            user_type:userData[0].user_type
+        }})
             .then(res=>{
             console.log(res);
-            <Redirect push to="/patients" />
+            redirect.push('/patients');
             setmodal(!modal);
         })
     }
@@ -44,7 +44,7 @@ function PacientProfile({match}) {
                     </div>
                     <div className="px-4">
                         <h1 className="is-size-2  has-text-black">
-                            { numePacient}           
+                            { userData[0]?.nume_pacient}  { userData[0]?.prenume_pacient}          
                         </h1>
                         {userType==='admin' &&
                             <div className="buttons mt-3">
@@ -58,7 +58,7 @@ function PacientProfile({match}) {
                                 <div className="modal-background"></div>
                                 <div className="modal-card">
                                     <section className="modal-card-body">
-                                    <p>Are you sure you want to delete {numePacient}</p>
+                                    <p>Are you sure you want to delete { userData[0]?.nume_pacient}  { userData[0]?.prenume_pacient} </p>
                                     </section>
                                     <footer className="modal-card-foot">
                                     <button className="button is-success"onClick={()=>deleteRequest()}>Delete</button>

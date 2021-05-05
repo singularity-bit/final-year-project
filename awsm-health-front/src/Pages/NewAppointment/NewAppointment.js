@@ -1,84 +1,73 @@
 import React,{useContext,useState,useEffect} from 'react'
 import './NewAppointment.css'
 import {CategoryContext,SpecialistContext} from '../Specialist/CategoryContext'
+import SelectCategory from './SelectCategory'
+import SelectSpecialist from './SelectSpecialist'
+import SelectService from './SelectService'
 import SelectDate from './SelectDate'
 import {UserContext} from '../../UserContext'
+import moment from 'moment'
+import axios from 'axios'
 function NewAppointment() {
 
-    const category=useContext(CategoryContext)
-    const specialist=useContext(SpecialistContext)
     const userType=useContext(UserContext)
 
-    const [activeCategory, setActiveCategory] = useState('')
-    const [activeSpecialists, setactiveSpecialist] = useState([])
+    
+
+    const [activeCategory, setActiveCategory] = useState()
     const [selectSpecialist, setselectSpecialist] = useState([])
-    const [activeService, setactiveService] = useState([])
+    const [selectedServices, setselectedServices] = useState([])
+
+    const [pacientNume,setPacientNume]=useState();
+    const [pacientPrenume, setpacientPrenume] = useState();
+
+    const [deleteService, setdeleteService] = useState();
+
+
     const [totalPrice, settotalPrice] = useState(0)
     const [calendarisOpened, setcalendarisOpened] = useState(false)
 
-    const onChangeCategory=(e)=>{
-        setActiveCategory(e)
-        
-    }
-    const onChangeSpecialist=(e)=>{
-        const listCopy=[...activeSpecialists].filter(item=>{
-            return item.name===e 
-        })
-        setselectSpecialist(listCopy)
+    const [selectedDate,setSelectedDate]=useState([]);
+    const [savedDate,setSavedDate]=useState([]);
 
-    }
-    const onChangeService=(e)=>{
-            
-            const result=activeService.find((item)=>item===e)
-            result===undefined?setactiveService([...activeService,e]):
-            setactiveService(activeService.filter(item=>{return item!==e}))
-            
-            
-    }
+    const formatedDateSQLstartDate=moment(savedDate[0]?.startDate).format("YYYY-MM-DD HH:mm:ss");
+    const formatedDateSQLendDate=moment(savedDate[0]?.endDate).format("YYYY-MM-DD HH:mm:ss");
+    const formatedDateDisplay=moment(savedDate[0]?.startDate).format('MMMM Do YYYY, h:mm:ss');
     const handleDatePick=()=>{
         setcalendarisOpened(!calendarisOpened)
     }
-    const categoryList=category.map((item,index)=>{  
-            return (
-            <option key={index} value={item}>{item}</option>
-            )
-    })
 
-    const specialistList=activeSpecialists.map((item)=>{
-        return <option key={item.id} value={item.name}>{item.name}</option>;
-    })
-
-    const servicesList=
-        selectSpecialist[0]?.service?.map((item,index)=>{
-        return <option key={index} value={item.serviceName}>{item.serviceName}</option>;
-    })
-
-    useEffect(() => {
-        const listCopy=[...specialist].filter(item=>{
-            return item.category===activeCategory 
-        })
+    const onMakeAppointment=()=>{
+        let splitName='';
+        let nume='';
+        let prenume='';
+        if(userType==='admin'){
+            splitName=selectSpecialist.split(' ');
+            nume=splitName[0];
+            prenume=splitName[1];
+        }else{
+            
+        }
         
-        setactiveSpecialist(listCopy)
-        console.log("category ",activeCategory)
-        console.log("spec ",listCopy)
-    }, [activeCategory]) 
-
+        axios.post('http://localhost:3000/make-appointment',{
+            title:savedDate[0].title,
+            status:'active',
+            nume_medic:nume,
+            prenume_medic:prenume,
+            nume_pacient:pacientNume,
+            prenume_pacient:pacientPrenume,
+            startDate:formatedDateSQLstartDate,
+            endDate:formatedDateSQLendDate
+        }).then(res=>console.log(res.data))
+    }
 
     useEffect(()=>{
-        var sum=0
-        const temp=selectSpecialist[0]?.service?.filter((item,index)=>{
-            return item.serviceName===activeService.find((i)=>i===item.serviceName)
-        })
-        
-        temp?.forEach((i)=>{
-            
-            var price=i.servicePrice
-            var priceInt=parseInt(price,10)
-            sum=sum+priceInt
-            
-        })
-        settotalPrice(sum) 
-    },[activeService])
+        console.log("picked date",formatedDateDisplay);
+    },[savedDate])
+    useEffect(()=>{
+        console.log("medic id",selectSpecialist)
+    },[selectSpecialist])
+    
     
     return (
         <article className='panel is-primary my-6 '>
@@ -87,36 +76,33 @@ function NewAppointment() {
             </p>
             {userType==='admin' &&
                 <>
-                <p className='panel-block'>
+            <p className='panel-block'>
                 <p className='control'>
                 <div className="field is-horizontal ">
-                    
-                    <div className="field-label is-normal">
-                        <label className="label">Nume</label>
-                    </div>
-                    <div className="field-body">
-                        <div className="field">
-                        <p className="control has-icons-left">
-                            <input className="input" type="text" placeholder="Name"/>
-                            <span className="icon is-small is-left">
-                            <i className="fas fa-user"></i>
-                            </span>
-                        </p>
-                        </div>
-                    </div>            
-                    <div className="field-label is-normal">
-                        <label className="label">Prenume</label>
-                    </div>
-                    <div className="field-body">
-                        <div className="field">
-                        <p className="control has-icons-left">
-                            <input className="input" type="text" placeholder="prenume"/>
-                            <span className="icon is-small is-left">
-                            <i className="fas fa-user"></i>
-                            </span>
-                        </p>
-                        </div>
-                    </div>
+                <div className="field-label"><label className="label">Nume</label></div>
+                <div className="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input " type="text" placeholder="nume" onChange={(e)=>setPacientNume(e.target.value)}/>
+                        <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                        </span>                    
+                    </p>
+                </div>
+
+
+                <div className="field-label"><label className="label">Prenume</label></div>
+                <div className="field-body">
+                <div class="field">
+                    <p class="control is-expanded has-icons-left has-icons-right">
+                        <input class="input " type="text" placeholder="prenume" onChange={(e)=>setpacientPrenume(e.target.value)}/>
+                        <span class="icon is-small is-left">
+                        <i class="fas fa-user"></i>
+                        </span>                    
+                    </p>
+                </div>
+                </div>
+                </div>
                 </div>
                 </p>
                 
@@ -128,7 +114,7 @@ function NewAppointment() {
                 <div className="field-body">
                 <div class="field">
                     <p class="control is-expanded has-icons-left has-icons-right">
-                        <input class="input is-success" type="email" placeholder="Email"/>
+                        <input class="input " type="email" placeholder="Email"/>
                         <span class="icon is-small is-left">
                         <i class="fas fa-envelope"></i>
                         </span>
@@ -172,32 +158,18 @@ function NewAppointment() {
                     <label className="label">Category</label>
                 </div>
                 <div className="field-body">
-                    <div className="field is-narrow">
-                    <div className="control">
-                        <div className="select is-fullwidth">
-                        <select onChange={(e)=>onChangeCategory(e.target.value)}>
-                            {categoryList}
-                        </select>
-                        </div>
-                    </div>
-                    </div>
+                    <SelectCategory selectedCategory={setActiveCategory}/>
                     <p className='control'>
-                <div className="field is-horizontal ">
-                <div className="field-label is-normal">
-                    <label className="label">Choose Specialist</label>
-                </div>
-                <div className="field-body">
-                    <div className="field is-narrow">
-                    <div className="control">
-                        <div className="select is-fullwidth">
-                        <select  onChange={(e)=>onChangeSpecialist(e.target.value)}>
-                            {specialistList}
-                        </select>
-                        </div>
+                    <div className="field is-horizontal ">
+                    <div className="field-label is-normal">
+                        <label className="label">Choose Specialist</label>
+                    </div>
+                    <div className="field-body">
+                        {   
+                            <SelectSpecialist selectedSpecialist={setselectSpecialist} category={activeCategory}/>
+                        }
                     </div>
                     </div>
-                </div>
-                </div>
                 </p>  
                 <p className='control'>
                     <div className='field is-horizontal'>
@@ -205,15 +177,9 @@ function NewAppointment() {
                         <label className="label">Choose service</label>
                     </div>
                     <div className="field-body">
-                        <div className="field is-narrow">
-                        <div className="control">
-                            <div className="select is-fullwidth">
-                            <select onChange={(e)=>onChangeService(e.target.value)}>
-                                {servicesList}
-                            </select>
-                            </div>
-                        </div>
-                        </div>
+                    {activeCategory?.length>0 & selectSpecialist.length>0 && 
+                            <SelectService selectService={setselectedServices} category={activeCategory} price={settotalPrice} closeTag={deleteService}/>
+                        }
                     </div>
                     </div> 
                 </p>
@@ -240,68 +206,93 @@ function NewAppointment() {
                                 </div>
                             </div>
                         </div>
+
                         
                     </div>
                     
                 </p>                          
             </p>
-
-            <p className='panel-block'>
-                <p className='control'>
-                <div className="field is-horizontal block">
-                    <div className="field-label is-normal">
-                        <label className="label">Subject</label>
-                    </div>
-                    <div className="field-body">
-                        <div className="field">
-                        <div className="control">
-                            <input className="input is-danger" type="text" placeholder="e.g. Partnership opportunity"/>
-                        </div>
-                        <p className="help is-danger">
-                            This field is required
+            
+            {
+                savedDate.length>0&& 
+                    <p className='panel-block'>
+                        <p className='control'>
+                        <div className="field is-horizontal">
+                            <div className="field-label is-normal">
+                                <label className="label">Subject</label>
+                            </div>
+                            <div className="field-body">
+                                <div className="field">
+                                <div className="control">
+                                    <input className="input is-static" type="text" placeholder={`${savedDate[0]?.title} ${formatedDateDisplay}`} readOnly/>
+                                </div>
+                                </div>
+                            </div>
+                            </div>
                         </p>
-                        </div>
-                    </div>
-                    </div>
-                </p>
-                
-            </p>               
+                        
+                    </p>       
+            }
+                    
             <p className='panel-block'>
             <p className='control'>
-            <div className="field is-horizontal block">
+            <div className="field is-horizontal">
                 
                 <div className="field-body">
-                    <div className="field is-narrow">
+                    <div className="field ">
                     <div className="control">
-                        <button className="button is-primary">
-                        Send message
-                        </button>
+                        {
+                            activeCategory?.length>0 &
+                            selectSpecialist?.length>0 &
+                            selectedServices?.length>0 &
+                            pacientNume?.length>0 &
+                            pacientPrenume?.length>0 &
+                            savedDate?.length>0 ?
+                            <button className="button is-primary" onClick={()=>onMakeAppointment()}>
+                            Make appointment
+                            </button> :
+                            <button className="button is-warning " disabled>
+                            Please fill all fields
+                            </button>
+                            
+                        }
+                        
                     </div>
                     </div>
                 </div>
-                <div className="field-label">
-                    Total de plata: {<span>{totalPrice}</span>} {activeService.map((item,index)=>{
-                        return <p className="has-text-weight-medium"> {item}</p>
-                    })}
+                <div className="field-label is-narrow">
+                    Total de plata: {<span>{totalPrice}</span>} 
+                    <div className="tags m-3">
+                    {selectedServices?.map((item,index)=>{
+                        return <span key={index} className="tag is-info is-light is-medium"> 
+                        {item.serviceName}
+                        <button class="delete is-small " onClick={()=>setdeleteService(item.serviceName)}></button>
+                        </span> 
+                        })
+                    }
+                    </div>
+                    
                 </div>
                 </div>
-            </p>
-           
+            </p>          
             </p>
             {calendarisOpened && 
                     <div className="modal is-active">
                         <div className="modal-background"></div>
                         <div className="modal-card">
                             <header className="modal-card-head">
-                                <p className="modal-card-title">Select one free day</p>
+                                <p className="modal-card-title">Select one free window</p>
                                 
                             </header>
                             <section className="modal-card-body">
-                                <SelectDate/>
+                                <SelectDate chosenDate={setSelectedDate} />
                             </section>
                             <footer className="modal-card-foot">
-                                <button className="button is-success">Save changes</button>
-                                <button className="button">Cancel</button>
+                                <button className="button is-success" onClick={()=>{
+                                    selectedDate.length>0 && setSavedDate(selectedDate);
+                                    setcalendarisOpened(!calendarisOpened);
+                                    }}>Save changes</button>
+                                <button className="button" onClick={()=>setcalendarisOpened(!calendarisOpened)}>Cancel</button>
                             </footer>
                             
                         </div>

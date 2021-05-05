@@ -14,139 +14,7 @@ import SpecialistProfile from './Specialist/SpecialistProfile'
 import Register from './Signin/Register/Register'
 import {UserContext} from '../UserContext'
 import {CategoryContext,SpecialistContext} from './Specialist/CategoryContext'
-
-const specialistTypes=['oculist','oftalmolog','chirurg','dermatolog'];
-const specialistList=[
-    {
-        id:0,
-        name:'Vasile',
-        category: 'oculist',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ],   
-    
-    },
-    {
-        id:1,
-        name:'Alex',
-        category: 'oftalmolog',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ]},
-    {
-        id:2,
-        name:'Ion',
-        category: 'chirurg',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ]},   
-    {
-        id:3,
-        name:'Maria',
-        category: 'dermatolog',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ]}
-    ,
-    {
-        id:4,
-        name:'bija',
-        category: 'oftalmolog',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ]},
-    {
-        id:5,
-        name:'dulghieru',
-        category: 'chirurg',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ]},
-    {
-        id:6,
-        name:'pusia',
-        category: 'dermatolog',
-        rating:3,
-        service:[{
-            serviceName:"consult1",
-            servicePrice:50+" lei",
-        },
-        {
-            serviceName:"consult2",
-            servicePrice:50+" lei"
-        },
-        {
-            serviceName:"consult3",
-            servicePrice:50+" lei"
-        }
-        ]}
-]
+import axios from 'axios'
 
 const  Routes=({userType})=>{
     return (
@@ -167,14 +35,10 @@ const  Routes=({userType})=>{
 
                         <Route  path='/login' component={Login}/>
                         <Route path='/register' component={Register}/>
-                        <CategoryContext.Provider value={specialistTypes}>
-                            <SpecialistContext.Provider value={specialistList}>
-                            <Route path='/new-appointment' component={NewAppointment}/>
-                            </SpecialistContext.Provider>
+
+                        <Route path='/new-appointment' component={NewAppointment}/>
                         
-                        </CategoryContext.Provider>
-                        
-                        <Route path='/profile/:id/:name/:category'  component={SpecialistProfile}/>
+                        <Route path='/medic/:id'  component={SpecialistProfile}/>
                         <Route path='/pacient/:id'  component={PacientProfile}/>
                 </UserContext.Provider>
                     

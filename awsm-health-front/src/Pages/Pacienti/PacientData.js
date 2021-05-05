@@ -27,6 +27,7 @@ function PacientData(props) {
         const fullname=input.name.split(' ');
         axios.put('http://localhost:3000/change-user',{
             id:input.id,
+            user_type:userData[0].user_type,
             prenume_pacient:fullname[0],
             nume_pacient:fullname[1],
             cnp_pacient:input.cnp,

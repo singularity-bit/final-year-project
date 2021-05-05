@@ -16,12 +16,12 @@ function SpecialistCard(props) {
 
 
 
-    const specialistList=displaySpecialist?.map((item,index)=>{
-        const {prenume_medic,category}=item;
+    const specialistList=displaySpecialist?.map((item)=>{
+        const {prenume_medic,nume_medic,category,id}=item;
         return(
-            <div className='column is-one-quarter' key={item.Id}>
+            <div className='column is-one-quarter' key={id}>
                     <div className='block'>
-                        <Link to={`profile/${item.id}/${item.prenume_medic}/${item.category}`}>
+                        <Link to={`medic/${id}`}>
                             <div  className="card">
                                 <div className="card-content ">
                                     <div className="is-flex-direction-column is-justify-content-center">
@@ -31,7 +31,7 @@ function SpecialistCard(props) {
                                         </figure>
                                     </div>
                                     <div className="card-details has-text-centered">
-                                        <p className="title is-4">{prenume_medic}</p>
+                                        <p className="title is-4">{prenume_medic} {nume_medic}</p>
                                         <p className="subtitle is-6 has-text-link">{category}</p>
                                     </div>
                                     </div>

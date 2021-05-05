@@ -8,7 +8,7 @@ import DropDown from '../../Components/DropDown/DropDown'
 function Specialist() {
     
     
-    const [specialists, setspecialists] = useState()
+    const [specialists, setspecialists] = useState([])
     const specialistTypes=Array.from(new Set(specialists?.map(item=>{return item.category})))
     //hooks for filtering
     const [listOfFilters,setListOfFilters]=useState(new Set());
@@ -24,7 +24,6 @@ function Specialist() {
         setspecialists(res.data)
         
     })
-    console.log("specialist: ",specialists)
     },[])
 
     const displayTags=Array.from(listOfFilters).map((item,index)=>{
@@ -72,7 +71,7 @@ function Specialist() {
                 {/*specialist cards */}
 
                 <div className='columns is-multiline  pt-5'>
-                    <SpecialistCard data={specialists} filter={listOfFilters}/>
+                    {specialists.length>0 && <SpecialistCard data={specialists} filter={listOfFilters}/>} 
                 </div>
         </div>
     )
