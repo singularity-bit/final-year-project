@@ -6,6 +6,7 @@ import React, {useState,useEffect,useContext} from 'react';
 import Login from './Pages/Signin/Login/Login';
 import Register from './Pages/Signin/Register/Register';
 import MainView from './MainView';
+import {Redirect, Route } from 'react-router';
 
 
 
@@ -17,12 +18,6 @@ function App() {
   const [userType,setUserType]=useState('');
 
   const onRouteChange=(argument)=>{
-    if(argument==='signout'){
-      
-      setSignedIn(false)
-    }else if(argument==='home'){    
-      setSignedIn(true);
-    }
     setRoute(argument);
   }
 
@@ -32,12 +27,12 @@ function App() {
     
   }
   useEffect(()=>{
-    console.log("from app "+userType)
-  },[userType])
+    <Redirect to="/"/>
+  },[isSignedIn])
     return (
       <div className="App">
         {
-          route==='home'
+          route==='/' 
           ?
               <MainView onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
             
@@ -47,7 +42,7 @@ function App() {
             ?
             <Register onRouteChange={(argument)=>onRouteChange(argument)}/>
             :
-            <Login onRouteChange={(argument)=>onRouteChange(argument)} userType={(argument)=>onChangeUser(argument)}/>
+            <Login onRouteChange={(argument)=>onRouteChange(argument)} userType={(argument)=>setUserType(argument)} isAuth={setSignedIn}/>
           )
           
         }

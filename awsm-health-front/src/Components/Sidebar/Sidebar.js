@@ -55,7 +55,7 @@ function Sidebar() {
         
         const isSelected=active===item.title;
                     
-                        if(userType==='pacient'){
+                        if(userType.user_type==='pacient'){
                             if(item.title!=='Patients' & item.title!=='Appointments'){
                                 return(
                                     <li key={index} 
@@ -82,7 +82,7 @@ function Sidebar() {
                                 )     
                             }
                             
-                        }else if(userType==='medic'){
+                        }else if(userType.user_type==='medic'){
                             if(item.title!=='Patients' & item.title!=='Appointments'){
                                 return(
                                     <li key={index} 

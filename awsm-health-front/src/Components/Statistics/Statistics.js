@@ -15,7 +15,7 @@ function Statistics(props) {
                 
                 <div className='is-flex is-justify-content-space-between is-flex-wrap-wrap py-5'>
                     <h4 class="title is-4 has-text-grey-dark">Overview</h4>
-                    {userType==='pacient' | userType==='admin' &&
+                    {userType.user_type==='pacient' | userType.user_type==='admin' &&
                         <Link to='/new-appointment'>
                             <button className="button is-link  ">New appointment</button>
                         </Link>

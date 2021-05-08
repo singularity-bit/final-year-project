@@ -14,11 +14,11 @@ function AppointmentScheduled(props) {
     //hook to change arrow icon when pressed
     const [isActive,setActive]=useState();
 
-    const [appointmentStatus, setappointmentStatus] = useState('');
+    const [appointmentStatus, setappointmentStatus] = useState();
 
     useEffect(()=>{
         //updates appoinment list with status of app
-        axios.put('http://localhost:3000/update-appointments',appointmentStatus).then(res=>result(res.data));
+        appointmentStatus?.length>0 && axios.put('http://localhost:3000/update-appointments',appointmentStatus).then(res=>result(res.data));
     },[appointmentStatus])
 
     useEffect(()=>{
@@ -27,10 +27,8 @@ function AppointmentScheduled(props) {
         data.length>0 && data.forEach(item=>{
             setOpen(isOpen=>[...isOpen,{id:item.id,open:false}])
         })
-        console.log("isop",isOpen)
     },[])
     
-    console.log("here",appointmentStatus)
 
     const onchangeStatus=(id,type)=>{
             setappointmentStatus({id:id,status:type});

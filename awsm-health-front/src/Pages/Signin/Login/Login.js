@@ -1,70 +1,51 @@
 import React,{useState,useEffect} from 'react';
+import axios from 'axios'
+import { compareElementParent } from '@syncfusion/ej2-base';
 
 function Login (props) {
-    const {onRouteChange,userType}=props;
-    const [targetRoute,setTargetRoute]=useState('login');
+    const {onRouteChange,userType,isAuth}=props;
+    //const [targetRoute,setTargetRoute]=useState('login');
     const [user, setUser] = useState();
-    const [signInEmail, setsignInEmail] = useState('');
+    const [username, setusername] = useState('');
     const [signInPassword, setsignInPassword] = useState('');
+    const [auth,setAuth]=useState(false)
     
-    const onEmailChange=(event)=>{
-        setsignInEmail(event.target.value)         
+    const onUsernameChange=(event)=>{
+        setusername(event.target.value)         
     }
-
-    //hardcoded users
-    const users=[{
-        username:'admin',
-        password:'123',
-        userType:'admin',
-    },
-    {
-        username:'medic',
-        password:'123',
-        userType:'medic',
-    },
-    {
-        username:'pacient',
-        password:'123',
-        userType:'pacient',
-    }
-]
-
     const onPasswordChange=(event)=>{
         setsignInPassword(event.target.value) 
     }
 
-    //update in main App route
-    useEffect(()=>{
-        onRouteChange(targetRoute);
-    },[targetRoute]) 
-
-    //update in main App user type
-    useEffect(()=>{
-        userType(user)
-    },[user])
-
-
     const checkCredentials=()=>{
-        
-        const checkUser= [...users].filter((item,index)=>{
-            return signInEmail===item.username & signInPassword===item.password
-        })
-        if(checkUser.length>0){
-            setUser(checkUser[0].userType)
-            return true
-        }else {alert("nu exista"); return false}  
+        axios.post('http://localhost:3000/signin',{
+            username:username,
+            password:signInPassword
+        }).then(result=>{
+            
+            setUser(result.data)
+            setAuth(true)
+        }).catch(err=>console.log(err))
     }
+      //update in main App user type
+    useEffect(()=>{
+        if(auth){
+            userType(user)
+            onRouteChange('/')
+            isAuth(auth)
+        }
+    },[auth])
         return(
             <section className="hero is-fullheight">
                     
                         <div className="column is-4 is-offset-4">
                             <p className="title is-1 has-text-centered has-text-left-mobile pt-6">AWSMHealth</p>
                             <h2 className="subtitle has-text-centered is-size-5 ">Please sign-in or register</h2>
-                            <form className="box ">
+                            <div className="box ">
                                 <div className="field">
-                                    <label className="label has-text-left">Email</label>
+                                    <label className="label has-text-left">username</label>
                                         <div className="control">
-                                            <input onChange={onEmailChange} className="input" type="email" placeholder="e.g. alex@example.com"/>
+                                            <input onChange={onUsernameChange} className="input" type="text"/>
                                         </div>
                                 </div>
 
@@ -81,16 +62,11 @@ function Login (props) {
                                     <br></br>
                                 </div>
                                             
-                                <button className="button is-block is-fullwidth is-primary mgt-small"
-                                    onClick={()=>{checkCredentials() &&
-                                        setTargetRoute('home');
-                                    }
-                                        }
-                                >Sign in</button>
-                            </form>            
+                                <button className="button is-block is-fullwidth is-primary mgt-small" onClick={()=>checkCredentials()}>sign in</button>
+                            </div>            
                             <p className="has-text-grey has-text-centered">
                                 <a 
-                                    onClick={()=>setTargetRoute('register')} 
+                                    onClick={()=>onRouteChange('register')} 
                                 >Sign Up</a> &nbsp;·&nbsp;
                                 <a href="../">Forgot Password</a> &nbsp;·&nbsp;
                                 <a href="../">Need Help?</a>

@@ -46,7 +46,7 @@ function PacientProfile({match}) {
                         <h1 className="is-size-2  has-text-black">
                             { userData[0]?.nume_pacient}  { userData[0]?.prenume_pacient}          
                         </h1>
-                        {userType==='admin' &&
+                        {userType.user_type==='admin' &&
                             <div className="buttons mt-3">
                             <button class="button is-warning" onClick={()=>setEnableInput(!enableInput)}>Modify user data</button>
                             <button class="button is-danger" onClick={()=>setmodal(!modal)} >Delete User</button>
@@ -75,7 +75,7 @@ function PacientProfile({match}) {
                         <a  onClick={()=>setActiveTab('profile')} className={activeTab=='profile'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}>Profile info</a>
                         <a  onClick={()=>setActiveTab('appointments')} className={activeTab=='appointments'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}>Appointments</a>
                     </div> 
-                    {userType!=='medic' &&
+                    {userType.user_type!=='medic' &&
                         <div className='is-flex is-justify-content-flex-end is-pulled-right sub-menu-icons'>
                         <a  onClick={()=>setActiveTab('app')} className={activeTab=='app'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}> <i className="fas fa-calendar-plus fa-2x "/> </a>
                         </div>

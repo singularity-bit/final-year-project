@@ -38,17 +38,10 @@ function NewAppointment() {
     }
 
     const onMakeAppointment=()=>{
-        let splitName='';
-        let nume='';
-        let prenume='';
-        if(userType==='admin'){
-            splitName=selectSpecialist.split(' ');
-            nume=splitName[0];
-            prenume=splitName[1];
-        }else{
-            
-        }
-        
+        const splitName=selectSpecialist.split(' ');
+        const nume=splitName[0];
+        const prenume=splitName[1];
+
         axios.post('http://localhost:3000/make-appointment',{
             title:savedDate[0].title,
             status:'active',
@@ -62,8 +55,10 @@ function NewAppointment() {
     }
 
     useEffect(()=>{
-        console.log("picked date",formatedDateDisplay);
-    },[savedDate])
+        console.log("nume",userType.nume_pacient)
+        setPacientNume(userType.nume_pacient);
+        setpacientPrenume(userType.prenume_pacient)
+    },[])
     useEffect(()=>{
         console.log("medic id",selectSpecialist)
     },[selectSpecialist])
@@ -74,7 +69,7 @@ function NewAppointment() {
             <p class="panel-heading">
                 Create new appointment
             </p>
-            {userType==='admin' &&
+            {userType.user_type==='admin' &&
                 <>
             <p className='panel-block'>
                 <p className='control'>
@@ -242,6 +237,8 @@ function NewAppointment() {
                     <div className="field ">
                     <div className="control">
                         {
+                            userType.user_type==='admin'?
+                            (
                             activeCategory?.length>0 &
                             selectSpecialist?.length>0 &
                             selectedServices?.length>0 &
@@ -254,6 +251,18 @@ function NewAppointment() {
                             <button className="button is-warning " disabled>
                             Please fill all fields
                             </button>
+                            ):(
+                                selectSpecialist?.length>0 &
+                                selectedServices?.length>0 &
+                                savedDate?.length>0 ?
+                                <button className="button is-primary" onClick={()=>onMakeAppointment()}>
+                                Make appointment
+                                </button>
+                                :
+                                <button className="button is-warning " disabled>
+                                Please fill all fields
+                                </button>
+                            )
                             
                         }
                         

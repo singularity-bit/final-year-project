@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React,{useState,useEffect} from 'react';
 
 
@@ -11,7 +12,7 @@ function Register(props){
     const [phoneNr, setphoneNr] = useState()
     const [passRepeat, setpassRepeat] = useState()
     const [targetRoute,setTargetRoute]=useState('register');
-    
+    const [username, setusername] = useState()
 
     const [cnpIsValid, setcnpIsValid] = useState(false)
     const [emailIsValid, setemailIsValid] = useState(false)
@@ -84,6 +85,19 @@ function Register(props){
         }else{
             setprenumeIsValid(false)
         }
+    }
+
+    const onRegister=()=>{
+        axios.post('http://localhost:3000/register',{
+            cnp_pacient:cnp,
+            nume_pacient:nume,
+            prenume_pacient:prenume,
+            username:username,
+            user_type:'pacient',
+            tel_nr:phoneNr,
+            email:signInEmail,
+            password:signInPassword
+        }).then(res=>{res.status==='OK' && setTargetRoute('login')})
     }
     
     useEffect(()=>{
@@ -212,6 +226,23 @@ function Register(props){
                                     </div>                                           
                                     </div>
 
+                                    <div className="field is-horizontal">
+                                        <div className="field-body">
+                                        <div className="field">
+                                            <div className="field-label is-normal">
+                                                <label className="label has-text-left">Username</label>
+                                            </div>
+                                            <p className="control is-expanded has-icons-left">
+                                                <input onChange={(event)=>setusername(event.target.value)} className={numeIsValid?"input":"input is-danger"} type="text" placeholder="username"/>
+                                                <span className="icon is-small is-left">
+                                                <i className="fas fa-user"></i>
+                                                </span>
+                                            </p>
+                                        </div>
+
+                                        </div>
+                                    </div>
+
                                     <div className="field">
                                     <div className="field-label is-normal">
                                                             <label className="label has-text-left">Parola</label>
@@ -245,7 +276,7 @@ function Register(props){
                                     </div>
                                     <div className="field">
                                         <div className="control">
-                                            <button className="button is-block is-fullwidth is-primary mgt-small mx-0">
+                                            <button className="button is-block is-fullwidth is-primary mgt-small mx-0" onClick={()=>onRegister()}>
                                             Register
                                             </button>
                                         </div>
