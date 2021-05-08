@@ -1,9 +1,10 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors=require('cors');
+const jwt=require('jsonwebtoken');
 const knex=require('knex')
-const {list}=require('./upcomingAppoinments')
-const users=require('./users')
+const bcrypt = require('bcrypt');
+const saltRounds = 10;
 
 
 const app = express();
@@ -17,7 +18,8 @@ const db=knex({
         database : 'awsmhealth'
     }
 });
-const upcomingAppoinments = db.select(
+const upcomingAppoinments=(id) => {
+    return db.select(
     'appointments.id',
     'medici.nume_medic',
     'medici.prenume_medic',
@@ -31,8 +33,10 @@ const upcomingAppoinments = db.select(
 .from('medici')
 .join('appointments','medici.id','appointments.medic_id')
 .join('pacienti','pacienti.id','appointments.pacient_id')
-.where('status','=','active')
+.where('status','=','active').andWhere('pacienti.id','=',id)
 .orderBy('appointments.startDate','desc')
+
+}
 
 const medic_services=(id)=>{
     return db.select(
@@ -102,8 +106,9 @@ app.get('/',(req, res) => {
     res.json(users.db.users)
 })
 
-app.get('/upcoming-appoinments',(req,res)=>{
-    upcomingAppoinments.then(result=>res.json(result)).catch(err=>res.json(err));
+app.post('/upcoming-appoinments',(req,res)=>{
+    const {id}=req.body
+    upcomingAppoinments(id).then(result=>res.json(result)).catch(err=>res.json(err));
 })
 app.get('/specialist-by-category/:category',(req,res)=>{
     const {category}=req.params;
@@ -146,12 +151,42 @@ app.get('/medic-services/:id',(req,res)=>{
 })
 
 app.post('/signin',(req, res) => {
-    if(req.body.email===users.db.users[0].email && req.body.password===users.db.users[0].password){
-        res.json('success')
-    }else{
-        res.status(400).json('error')
+    const {username,password}=req.body
+    db.select(
+        'id',
+        'username',
+        'password',
+        'user_type'
+    ).from('pacienti').where('username','=',username)
+    .union(qb=>{
+        qb.select(
+            'id',
+            'username',
+            'password',
+            'user_type'
+        ).from('medici').where('username','=',username)
     }
-    res.json("signin")
+        
+    ).then(result=>{
+        console.log("pass",result[0].password)
+        bcrypt.compare(password, result[0].password).then(comp=>{
+            console.log("compare",comp)
+            if(comp){
+                res.json({
+                    id:result[0].id,
+                    username:result[0].username,
+                    user_type:result[0].user_type,
+                    nume_pacient:result[0].nume_pacient,
+                    prenume_pacient:result[0].prenume_pacient
+                })
+            }else{
+                res.json({
+                    "code":204,                 
+                    "error":"login and password does not match"            
+                    })   
+            }
+        })  
+    }).catch(err=>res.json(err));
 })
 
 app.post('/make-appointment',(req,res)=>{  
@@ -160,6 +195,7 @@ app.post('/make-appointment',(req,res)=>{
         prenume_pacient,nume_pacient,
         status,title
     }=req.body;
+    console.log("app",req.body)
     const medicID= db.select('medici.id').from('medici').where('medici.nume_medic','=',nume_medic).andWhere('medici.prenume_medic','=',prenume_medic);
     const pacientID=db.select('pacienti.id').from('pacienti').where('pacienti.nume_pacient','=',nume_pacient).andWhere('pacienti.prenume_pacient','=',prenume_pacient);
     db('appointments').insert({
@@ -174,6 +210,7 @@ app.post('/make-appointment',(req,res)=>{
 
 app.put('/update-appointments',(req,res)=>{
 
+
     const {id,status}=req.body;
     db('appointments').where('id','=',`${id}`)
     .update({status:status}).catch(err=>res.json(err));
@@ -181,15 +218,23 @@ app.put('/update-appointments',(req,res)=>{
     upcomingAppoinments.then(result=>res.json(result)).catch(err=>res.json(err));
     
 })
-app.post('/register',(req, res) =>{
-    const {email,name,password}=req.body;
-    users.db.users.push({
-        id:'3',
-        name:name,
+
+app.post('/register',async (req, res) =>{
+    
+    const {nume_pacient,prenume_pacient,username,tel_nr,email,password,cnp_pacient}=req.body   
+    const encryptedPassword = await bcrypt.hash(password, saltRounds)
+    let users={       
+        cnp_pacient:cnp_pacient,
+        nume_pacient:nume_pacient,
+        prenume_pacient:prenume_pacient,
+        username:username,
+        user_type:'pacient',
+        tel_nr:tel_nr,
         email:email,
-        password:password
-    })
-    res.json(users.db.users[users.db.users.length-1]);
+        password:encryptedPassword
+    }           
+    db('pacienti').insert(users).then(result=>res.json(result)).catch(err=>res.json(err));
+    
 })
 
 app.delete('/delete',(req,res)=>{
