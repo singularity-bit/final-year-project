@@ -9,15 +9,15 @@ const upcomingPacientAppointments=(req,res,db)=>{
         'pacienti.nume_pacient',
         'pacienti.prenume_pacient',
         'appointments.title',
-        'appointments.startDate',
-        'appointments.endDate',
+        'appointments.start_date',
+        'appointments.end_date',
         'appointments.status'
     )
     .from('medici')
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
     .where('status','=','active').andWhere('pacienti.id','=',id)
-    .orderBy('appointments.startDate','desc')
+    .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
 const Appointments=(req,res,db)=>{
@@ -28,14 +28,14 @@ const Appointments=(req,res,db)=>{
         'pacienti.nume_pacient',
         'pacienti.prenume_pacient',
         'appointments.title',
-        'appointments.startDate',
-        'appointments.endDate',
+        'appointments.start_date',
+        'appointments.end_date',
         'appointments.status'
     )
     .from('medici')
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
-    .orderBy('appointments.startDate','desc')
+    .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
 
@@ -47,15 +47,15 @@ const upcomingAppointments=(req,res,db)=>{
         'pacienti.nume_pacient',
         'pacienti.prenume_pacient',
         'appointments.title',
-        'appointments.startDate',
-        'appointments.endDate',
+        'appointments.start_date',
+        'appointments.end_date',
         'appointments.status'
     )
     .from('medici')
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
     .where('status','=','active')
-    .orderBy('appointments.startDate','desc')
+    .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
 
@@ -69,15 +69,15 @@ const upcomingMedicAppointments=(req,res,db)=>{
         'pacienti.nume_pacient',
         'pacienti.prenume_pacient',
         'appointments.title',
-        'appointments.startDate',
-        'appointments.endDate',
+        'appointments.start_date',
+        'appointments.end_date',
         'appointments.status'
     )
     .from('medici')
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
     .where('status','=','active').andWhere('medici.id','=',id)
-    .orderBy('appointments.startDate','desc')
+    .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
 
@@ -96,12 +96,12 @@ const getSpecialistsByCategory=(req,res,db)=>{
 const getServicesByCategory=(req,res,db)=>{
     const {category}=req.params;
     db.select(
-        'services.serviceName',
-        'services.servicePrice'
+        'services.service_name',
+        'services.service_price'
     )
     .from('medici')
-    .join('medic_services','medici.id','medic_services.medicID')
-    .join('services','services.serviceID','medic_services.serviceID')
+    .join('medic_services','medici.id','medic_services.medici_id')
+    .join('services','services.service_id','medic_services.service_id')
     .where('medici.category','=',category)
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
@@ -137,12 +137,12 @@ const getMedicServices=(req,res,db)=>{
         'medici.id' ,
         'medici.nume_medic',
         'medici.prenume_medic',
-        'services.serviceName',
-        'services.servicePrice'
+        'services.service_name',
+        'services.service_price'
     )
     .from('medici')
-    .join('medic_services','medici.id','medic_services.medicID')
-    .join('services','services.serviceID','medic_services.serviceID')
+    .join('medic_services','medici.id','medic_services.medici_id')
+    .join('services','services.service_id','medic_services.service_id')
     .where('medici.id','=',id)
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
