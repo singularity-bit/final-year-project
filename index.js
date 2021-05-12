@@ -74,4 +74,4 @@ app.post('/register', (req, res) =>register(req,res,db,bcrypt,saltRounds))
 app.delete('/delete',(req,res)=>deleteUser(req,res,db))
 app.put('/change-user',(req,res)=>changeUser(req,res,db))
 
-app.listen(3000);
+app.listen(process.env.PORT || 3000);
