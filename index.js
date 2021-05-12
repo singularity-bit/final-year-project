@@ -41,6 +41,7 @@ const db=knex({
 app.use(bodyParser.json());
 app.use(cors());
 
+app.get('/',(req,res)=>{res.send("its working")})
 app.get('/appoinments',(req,res)=>Appointments(req,res,db))
 app.get('/upcoming-appoinments',(req,res)=>upcomingAppointments(req,res,db))
 app.get('/upcoming-pacient-appoinments',(req,res)=>upcomingPacientAppointments(req,res,db))
