@@ -114,21 +114,55 @@ const getCategories=(req,res,db)=>{
 }
 
 const getSpecialists=(req,res,db)=>{
-    db.select('*').from('medici').then(medic=>res.json(medic)).catch(err=>res.json(err));
+    db.select(
+        'id',
+        'nume_medic',
+        'prenume_medic',
+        'user_type',
+        'category'
+    ).from('medici').then(medic=>res.json(medic)).catch(err=>res.json(err));
 }
 
 const getSpecialistProfile=(req,res,db)=>{
     const id=req.params.id    
-    db('medici').returning('*').where('id','=',id).then(specialist=>res.json(specialist)).catch(err=>err)
+    db.select(
+        "id",
+        "nume_medic",
+        "prenume_medic",
+        "cnp_medic",
+        "user_type",
+        "category",
+        "username",
+        "email",
+        "tel_nr"
+    ).from('medici').where('id','=',id).then(specialist=>res.json(specialist)).catch(err=>err)
 }
 
 const getPacienti=(req,res,db)=>{
-    db('pacienti').returning('*').then(pacient=>res.json(pacient)).catch(err=>err)
+    db.select(
+        "id",
+        "nume_pacient",
+        "prenume_pacient",
+        "cnp_pacient",
+        "user_type",
+        "username",
+        "email",
+        "tel_nr"
+    ).from('pacienti').then(pacient=>res.json(pacient)).catch(err=>err)
 }
 
 const getPacientProfile=(req,res,db)=>{
     const id=req.params.id   
-    db('pacienti').returning('*').where('id','=',id).then(pacient=>res.json(pacient)).catch(err=>err)
+    db.select(
+        "id",
+        "nume_pacient",
+        "prenume_pacient",
+        "cnp_pacient",
+        "user_type",
+        "username",
+        "email",
+        "tel_nr"
+    ).from('pacienti').where('id','=',id).then(pacient=>res.json(pacient)).catch(err=>err)
 }
 
 const getMedicServices=(req,res,db)=>{
