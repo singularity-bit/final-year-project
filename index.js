@@ -14,6 +14,9 @@ const { upcomingPacientAppointments,
         upcomingMedicAppointments,
         Appointments,
         upcomingAppointments,
+        getTotalSpecialists,
+        getTotalPacienti,
+        getFinishedAppointments,
         getSpecialistsByCategory,
         getServicesByCategory,
         getCategories,
@@ -65,6 +68,12 @@ app.get('/pacienti',(req,res)=>getPacienti(req,res,db))
 app.get('/pacienti/:id',(req,res)=>getPacientProfile(req,res,db))
 
 app.get('/medic-services/:id',(req,res)=>getMedicServices(req,res,db))
+
+app.get('/total-specialists',(req,res)=>getTotalSpecialists(req,res,db))
+
+app.get('/total-pacienti',(req,res)=>getTotalPacienti(req,res,db))
+
+app.get('/finished-appointments',(req,res)=>getFinishedAppointments(req,res,db))
 
 app.post('/signin',(req,res)=>signin(req,res,db,bcrypt))
 

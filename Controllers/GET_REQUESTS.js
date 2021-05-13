@@ -135,7 +135,7 @@ const getSpecialistProfile=(req,res,db)=>{
         "username",
         "email",
         "tel_nr"
-    ).from('medici').where('id','=',id).then(specialist=>res.json(specialist)).catch(err=>err)
+    ).from('medici').where('id','=',id).then(specialist=>res.json(specialist)).catch(err=>res.json(err))
 }
 
 const getPacienti=(req,res,db)=>{
@@ -180,11 +180,26 @@ const getMedicServices=(req,res,db)=>{
     .where('medici.id','=',id)
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
+
+const getTotalSpecialists=(req,res,db)=>{
+    db.count('*').from('medici').then(result=>res.josn(result)).catch(err=>res.json(err));
+}
+
+const getTotalPacienti=(req,res,db)=>{
+    db.count('*').from('pacienti').then(result=>res.josn(result)).catch(err=>res.json(err));
+}
+
+const getFinishedAppointments=(req,res,db)=>{
+    db.count('*').from('appointments').where('status','=','finished').then(result=>res.josn(result)).catch(err=>res.json(err));
+}
 module.exports={
     Appointments:Appointments,
     upcomingAppointments:upcomingAppointments,
     upcomingPacientAppointments:upcomingPacientAppointments,
     upcomingMedicAppointments:upcomingMedicAppointments,
+    getTotalSpecialists:getTotalSpecialists,
+    getTotalPacienti:getTotalPacienti,
+    getFinishedAppointments:getFinishedAppointments,
     getSpecialistsByCategory:getSpecialistsByCategory,
     getServicesByCategory:getServicesByCategory,
     getCategories:getCategories,
