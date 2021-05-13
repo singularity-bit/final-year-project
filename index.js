@@ -29,10 +29,12 @@ const {changeUser}=require('./Controllers/PUT_REQUESTS')
 const app = express();
 
 const db=knex({
-    client: 'pg',
+    client: 'mysql',
     connection: {
-        connectionString : process.env.DATABASE_URL,
-        ssl:true
+        host : '127.0.0.1',
+        user : 'root',
+        password : 'priwet12',
+        database : 'awsmhealth'
     }
 });
 
