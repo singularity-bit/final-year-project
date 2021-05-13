@@ -182,7 +182,7 @@ const getMedicServices=(req,res,db)=>{
 }
 
 const getTotalSpecialists=(req,res,db)=>{
-    db('medici').count('id').then(result=>res.josn(result)).catch(err=>res.json(err));
+    db('medici').count('id').then(result=>{console.log("count",result);res.josn(result)}).catch(err=>res.json(err));
 }
 
 const getTotalPacienti=(req,res,db)=>{
