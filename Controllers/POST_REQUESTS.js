@@ -62,7 +62,7 @@ const register= (req,res,db,bcrypt,saltRounds)=>{
             nume_pacient:nume_pacient,
             prenume_pacient:prenume_pacient,
             username:username,
-            user_type:'pacient',
+            user_type:"pacient",
             tel_nr:tel_nr,
             email:email,
             password:result

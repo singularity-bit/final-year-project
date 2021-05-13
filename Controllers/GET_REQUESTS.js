@@ -182,15 +182,15 @@ const getMedicServices=(req,res,db)=>{
 }
 
 const getTotalSpecialists=(req,res,db)=>{
-    db.count('*').from('medici').then(result=>res.josn(result)).catch(err=>res.json(err));
+    db('medici').count('*').then(result=>res.josn(result)).catch(err=>res.json(err));
 }
 
 const getTotalPacienti=(req,res,db)=>{
-    db.count('*').from('pacienti').then(result=>res.josn(result)).catch(err=>res.json(err));
+    db('pacienti').count('*').then(result=>res.josn(result)).catch(err=>res.json(err));
 }
 
 const getFinishedAppointments=(req,res,db)=>{
-    db.count('*').from('appointments').where('status','=','finished').then(result=>res.josn(result)).catch(err=>res.json(err));
+    db('appointments').count('*').where('status','=','finished').then(result=>res.josn(result)).catch(err=>res.json(err));
 }
 module.exports={
     Appointments:Appointments,
