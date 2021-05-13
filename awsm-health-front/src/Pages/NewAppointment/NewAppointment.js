@@ -16,10 +16,12 @@ function NewAppointment() {
 
     const [activeCategory, setActiveCategory] = useState()
     const [selectSpecialist, setselectSpecialist] = useState([])
+    const [idSpecialist,setIdSpecialist]=useState('')
     const [selectedServices, setselectedServices] = useState([])
 
     const [pacientNume,setPacientNume]=useState();
     const [pacientPrenume, setpacientPrenume] = useState();
+
 
     const [deleteService, setdeleteService] = useState();
 
@@ -30,9 +32,9 @@ function NewAppointment() {
     const [selectedDate,setSelectedDate]=useState([]);
     const [savedDate,setSavedDate]=useState([]);
 
-    const formatedDateSQLstartDate=moment(savedDate[0]?.startDate).format("YYYY-MM-DD HH:mm:ss");
-    const formatedDateSQLendDate=moment(savedDate[0]?.endDate).format("YYYY-MM-DD HH:mm:ss");
-    const formatedDateDisplay=moment(savedDate[0]?.startDate).format('MMMM Do YYYY, h:mm:ss');
+    const formatedDateSQLstart_date=moment(savedDate[0]?.start_date).format("YYYY-MM-DD HH:mm:ss");
+    const formatedDateSQLend_date=moment(savedDate[0]?.end_date).format("YYYY-MM-DD HH:mm:ss");
+    const formatedDateDisplay=moment(savedDate[0]?.start_date).format('MMMM Do YYYY, h:mm:ss');
     const handleDatePick=()=>{
         setcalendarisOpened(!calendarisOpened)
     }
@@ -42,27 +44,24 @@ function NewAppointment() {
         const nume=splitName[0];
         const prenume=splitName[1];
 
-        axios.post('http://localhost:3000/make-appointment',{
+        axios.post('https://powerful-brushlands-81010.herokuapp.com/make-appointment',{
             title:savedDate[0].title,
             status:'active',
             nume_medic:nume,
             prenume_medic:prenume,
             nume_pacient:pacientNume,
             prenume_pacient:pacientPrenume,
-            startDate:formatedDateSQLstartDate,
-            endDate:formatedDateSQLendDate
+            start_date:formatedDateSQLstart_date,
+            end_date:formatedDateSQLend_date
         }).then(res=>console.log(res.data))
     }
 
     useEffect(()=>{
-        console.log("nume",userType.nume_pacient)
+        console.log("user_type",userType.user_type)
         setPacientNume(userType.nume_pacient);
         setpacientPrenume(userType.prenume_pacient)
     },[])
-    useEffect(()=>{
-        console.log("medic id",selectSpecialist)
-    },[selectSpecialist])
-    
+
     
     return (
         <article className='panel is-primary my-6 '>
@@ -160,9 +159,7 @@ function NewAppointment() {
                         <label className="label">Choose Specialist</label>
                     </div>
                     <div className="field-body">
-                        {   
-                            <SelectSpecialist selectedSpecialist={setselectSpecialist} category={activeCategory}/>
-                        }
+                        <SelectSpecialist selectedSpecialist={setselectSpecialist} category={activeCategory} idSpecialist={setIdSpecialist}/>
                     </div>
                     </div>
                 </p>  
@@ -274,8 +271,8 @@ function NewAppointment() {
                     <div className="tags m-3">
                     {selectedServices?.map((item,index)=>{
                         return <span key={index} className="tag is-info is-light is-medium"> 
-                        {item.serviceName}
-                        <button class="delete is-small " onClick={()=>setdeleteService(item.serviceName)}></button>
+                        {item.service_name}
+                        <button class="delete is-small " onClick={()=>setdeleteService(item.service_name)}></button>
                         </span> 
                         })
                     }
@@ -285,7 +282,7 @@ function NewAppointment() {
                 </div>
             </p>          
             </p>
-            {calendarisOpened && 
+            {calendarisOpened  && 
                     <div className="modal is-active">
                         <div className="modal-background"></div>
                         <div className="modal-card">
@@ -294,7 +291,10 @@ function NewAppointment() {
                                 
                             </header>
                             <section className="modal-card-body">
-                                <SelectDate chosenDate={setSelectedDate} />
+                            {idSpecialist? <SelectDate chosenDate={setSelectedDate} idSpecialist={idSpecialist}/>:
+                            <>loading </>
+                            
+                        }
                             </section>
                             <footer className="modal-card-foot">
                                 <button className="button is-success" onClick={()=>{

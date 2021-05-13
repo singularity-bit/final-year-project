@@ -1,6 +1,9 @@
-import React from 'react'
+import React,{useContext} from 'react'
 import './TopNavigation.css';
+import {UserContext} from '../../UserContext'
 export default function TopNavigation() {
+    const userType=useContext(UserContext)
+
     return (
         <nav className="navbar my-4 px-6">
             <div className='navbar-menu '>
@@ -23,8 +26,9 @@ export default function TopNavigation() {
                                 
                             </p>
                             <p className='control dropdown'>
+                                <h3 class="title is-5 mr-5">{Object.values(userType)[1]}</h3>
+                                <i className="fas fa-user-circle fa-2x  is-clickable"></i>
                                 
-                                <i className="fas fa-user-circle fa-2x pr-5 is-clickable"></i>
                             </p>
                             
                         </div>

@@ -12,12 +12,11 @@ import {
     TodayButton,
     Toolbar,
 } from '@devexpress/dx-react-scheduler-material-ui';
-
+import {UserContext} from '../../UserContext'
 const currentDate = Date.now();
 
 export default function SelectDate(props) {
-
-    const {chosenDate}=props
+    const {chosenDate,idSpecialist}=props
 
     const [data, setData] = React.useState([]);
     const [newData,setNewData]=React.useState([])
@@ -35,7 +34,14 @@ export default function SelectDate(props) {
 
   React.useEffect(()=>{
     //shows only active app
-    axios.get('http://localhost:3000/upcoming-appoinments').then(res=> setData(res.data));    
+    idSpecialist && axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-medic-appoinments',({
+        params:{
+            id:idSpecialist
+        }
+    })).then(res=> {
+        console.log("id",idSpecialist)
+        setData(res.data)});
+        
 },[])
 
     React.useEffect(()=>{
@@ -80,7 +86,8 @@ export default function SelectDate(props) {
 
 
   return (
-        <React.Fragment>
+            data.length>0?
+            <React.Fragment>
         
         <Paper>
             <Scheduler
@@ -121,5 +128,7 @@ export default function SelectDate(props) {
             </Scheduler>
         </Paper>
         </React.Fragment>
+        :<>loading ..</>
+        
     );
 };

@@ -6,7 +6,7 @@ function SelectCategory(props) {
     const [categories,setCategories]=useState([])
 
     useEffect(()=>{
-        axios.get(`http://localhost:3000/categories`).then(res=>{
+        axios.get(`https://powerful-brushlands-81010.herokuapp.com/categories`).then(res=>{
         //pentru a returna doar categoriile specialistilor si a nu se repeta      
         setCategories(Array.from(new Set(res.data.map(item=>{return item.category}))))
         })

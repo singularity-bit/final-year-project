@@ -25,7 +25,7 @@ function PacientData(props) {
     
     const onSave=()=>{
         const fullname=input.name.split(' ');
-        axios.put('http://localhost:3000/change-user',{
+        axios.put('https://powerful-brushlands-81010.herokuapp.com/change-user',{
             id:input.id,
             user_type:userData[0].user_type,
             prenume_pacient:fullname[0],

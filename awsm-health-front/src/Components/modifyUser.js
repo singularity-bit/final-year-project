@@ -1,13 +1,13 @@
 import axios from 'axios'
 const modifyUser=(method,id,type)=>{
     if(method==='delete'){
-        axios.post('http://localhost:3000/delete',{
+        axios.post('https://powerful-brushlands-81010.herokuapp.com/delete',{
             id:id,
             type:type,
             method:method
         }).then(res=>console.log(res))
     }else if (method==='update'){
-        axios.put('http://localhost:3000/change-user',{
+        axios.put('https://powerful-brushlands-81010.herokuapp.com/change-user',{
             id:id,
             type:type,
             method:method
