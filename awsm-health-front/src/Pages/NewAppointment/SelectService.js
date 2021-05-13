@@ -9,7 +9,7 @@ function SelectService(props) {
 
     useEffect(()=>{
 
-        axios.get(`https://powerful-brushlands-81010.herokuapp.com/services-by-category/${category}`).then(res=>{
+        axios.get(`http://localhost:3000/services-by-category/${category}`).then(res=>{
             console.log("services",[...res.data])    
             setactiveService(res.data)
         });
@@ -19,7 +19,7 @@ function SelectService(props) {
         var sum=0   
         selectServices?.forEach((i)=>{
             
-            var price=i.service_price
+            var price=i.servicePrice
             var priceInt=parseInt(price,10)
             sum=sum+priceInt
             
@@ -30,12 +30,12 @@ function SelectService(props) {
     },[selectServices])
 
     useEffect(()=>{
-        closeTag!==undefined && setselectServices(selectServices.filter(item=> item.service_name!==closeTag))
+        closeTag!==undefined && setselectServices(selectServices.filter(item=> item.serviceName!==closeTag))
     },[closeTag])
 
     const servicesList=
         activeService.length>0 && activeService?.map((item,index)=>{
-        return <option key={index} value={item.service_name}>{item.service_name}</option>;
+        return <option key={index} value={item.serviceName}>{item.serviceName}</option>;
         
     })
     
@@ -44,14 +44,14 @@ function SelectService(props) {
         let servicesCopy=[...activeService];
 
         //check if the item is selected already in our list
-        const result=selectServices?.find((item)=>item.service_name===e)
+        const result=selectServices?.find((item)=>item.serviceName===e)
 
         //gets item from original array
-        const substractResult=servicesCopy.find(item=>item.service_name===e);
+        const substractResult=servicesCopy.find(item=>item.serviceName===e);
         console.log("mutate result",substractResult)
 
         result===undefined ?setselectServices([...selectServices,substractResult]):
-        setselectServices(selectServices.filter(item=> item.service_name!==e))       
+        setselectServices(selectServices.filter(item=> item.serviceName!==e))       
     }
     return (
         <div className="field-body">

@@ -1,4 +1,4 @@
-import React,{useEffect,useState,useContext} from 'react'
+import React,{useEffect,useState} from 'react'
 import {BrowserRouter as Router,Switch,Route} from 'react-router-dom';
 import Sidebar from './Components/Sidebar/Sidebar';
 import TopNavigation from './Components/TopNavigation/TopNavigation'
@@ -6,10 +6,11 @@ import Routes from './Pages/Routes';
 import './MainViev.css';
 import {UserContext} from './UserContext'
 
-
 function MainView(props) {
-    
-    const userType= useContext(UserContext);
+    const {userType}=props;
+    useEffect (()=>{
+        console.log("from main ",userType)
+    },[])
     return (
         <>
         <div className="columns">            
@@ -20,10 +21,10 @@ function MainView(props) {
                     
                 </aside>       
             <div className="column">
-            <UserContext.Provider value={userType}>
+            
                     <TopNavigation/>
-                    <Routes isSignedIn={props.isSignedIn}/>
-            </UserContext.Provider>
+                    <Routes userType={userType}/>
+            
             </div>
                 
 
