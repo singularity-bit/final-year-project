@@ -14,7 +14,7 @@ function SpecialistProfile({match}) {
     let redirect=useHistory();
 
     useEffect(()=>{
-        axios.get(`https://powerful-brushlands-81010.herokuapp.com/specialists/${match.params.id}`).then(res=>{
+        axios.get(`http://localhost:3000/specialists/${match.params.id}`).then(res=>{
             setuserData(res.data); 
             console.log("medici",userData)
         })
@@ -28,7 +28,7 @@ function SpecialistProfile({match}) {
         setEnableInput(value);
     }
     const deleteRequest=()=>{
-        axios.delete('https://powerful-brushlands-81010.herokuapp.com/delete',{data:{
+        axios.delete('http://localhost:3000/delete',{data:{
             id:userData[0].id,
             user_type:userData[0].user_type
         }})
@@ -94,11 +94,10 @@ function SpecialistProfile({match}) {
                     </div>
     
                     {
-                        activeTab=='profile' & userData.length>0  ? <SpecialistData userData={userData} enableInput={enableInput} toggler={toggleButtons}/> :
-                        <></>
+                        activeTab=='profile' & userData.length>0  && <SpecialistData userData={userData} enableInput={enableInput} toggler={toggleButtons}/>
                     }
                     {
-                        activeTab=='appointments' && <Appointments user={userData}/>
+                        activeTab=='appointments' && <Appointments/>
                     }
                                     
                 </div>

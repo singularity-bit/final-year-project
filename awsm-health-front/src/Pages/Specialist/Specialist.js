@@ -20,7 +20,7 @@ function Specialist() {
     //on page load display all specialist
     useEffect(()=>{
         removeAllFilters();
-        axios.get('https://powerful-brushlands-81010.herokuapp.com/specialists').then(res=>{
+        axios.get('http://localhost:3000/specialists').then(res=>{
         setspecialists(res.data)
         
     })

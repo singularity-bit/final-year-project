@@ -17,9 +17,8 @@ function AppointmentScheduled(props) {
     const [appointmentStatus, setappointmentStatus] = useState();
 
     useEffect(()=>{
-        console.log("change status",appointmentStatus)
         //updates appoinment list with status of app
-        appointmentStatus && axios.post('https://powerful-brushlands-81010.herokuapp.com/update-appointments',appointmentStatus).then(res=>result(res.data));
+        appointmentStatus?.length>0 && axios.put('http://localhost:3000/update-appointments',appointmentStatus).then(res=>result(res.data));
     },[appointmentStatus])
 
     useEffect(()=>{
@@ -37,8 +36,8 @@ function AppointmentScheduled(props) {
 
 
     const subMenu=(item)=>{
-        const{title,prenume_medic,start_date,id}=item;
-        const time=new Date(start_date).toLocaleTimeString(undefined, optionsHour)
+        const{title,prenume_medic,startDate,id}=item;
+        const time=new Date(startDate).toLocaleTimeString(undefined, optionsHour)
         return (           
             <ul>
                 <li className="my-4 ">
@@ -62,8 +61,8 @@ function AppointmentScheduled(props) {
     }
 
     const header =(item)=>{
-        const {start_date,id}=item;
-        const date= new Date(start_date).toLocaleDateString(undefined, options);
+        const {startDate,id}=item;
+        const date= new Date(startDate).toLocaleDateString(undefined, options);
 
         
         
@@ -95,12 +94,12 @@ function AppointmentScheduled(props) {
     return (
         data.length>0 && data.map(item=>{
             return (
-                <div key={item.id}>
+                <>
                     {
                         
                         header(item)
                     }                   
-                </div>         
+                </>         
             )
         })
     )

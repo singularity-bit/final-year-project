@@ -10,7 +10,7 @@ function Pacienti() {
 
     //on page load display all pacienti
     useEffect(()=>{
-        axios.get('https://powerful-brushlands-81010.herokuapp.com/pacienti').then(res=>{
+        axios.get('http://localhost:3000/pacienti').then(res=>{
         setPacienti(res.data);  
     })
     },[])

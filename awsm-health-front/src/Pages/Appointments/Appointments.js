@@ -1,4 +1,4 @@
-import React,{useState,useEffect,useContext} from 'react'
+import React from 'react'
 import { ViewState } from '@devexpress/dx-react-scheduler';
 import {
     Scheduler,
@@ -8,62 +8,61 @@ import {
     Appointments,
     TodayButton,
 } from '@devexpress/dx-react-scheduler-material-ui';
-import axios from 'axios';
-
-import {UserContext} from '../../UserContext'
 
 
-
-function Appointment(props) {
-
-    const {user}=props
-
-    const [userData,setUserData]=useState('')
-    const [data,setData]=useState('');
-
-    useEffect(()=>{
-
-        if(user){
-            if(user[0]?.user_type==='medic'){
-                axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-medic-appoinments',({
-                    params:{
-                        id:user[0]?.id
-                    }
-                })).then(result=>{
-                    console.log("appoinments",result.data)
-                    setData(result.data)})
-            }else if(user[0]?.user_type==='pacient'){
-                axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-pacient-appoinments',({
-                    params:{
-                        id:user[0]?.id
-                    }
-                })).then(result=>{
-                    console.log("appoinments",result.data)
-                    setData(result.data)})
-            }
-        }else{
-            axios.get('https://powerful-brushlands-81010.herokuapp.com/appoinments').then(result=>{
-                console.log("appoinments",result.data)
-                setData(result.data)})
-        }
-        
-       
-    },[])
+const scheduleList=[{
+    Id:0,
+    title: 'Oculist',
+    Name: 'Vasile',
+    startDate:new Date(2021,3,5,16,0),
+    endDate:new Date(2021,3,5,16,40),
+    Status:'active'
+},
+{
+    Id:1,
+    title: 'Oftalmolog',
+    Name: 'Alex',
+    startDate:new Date(2021,3,6,15,0),
+    endDate:new Date(2021,3,6,14,40) ,
+    Status:'active'  
+},
+{
+    Id:2,
+    title: 'Oculist',
+    Name: 'Vasile',
+    startDate:new Date(2021,4,5,16,0),
+    endDate:new Date(2021,4,6,16,40),
+    Status:'active'   
+},
+{
+    Id:3,
+    title: 'Oftalmolog',
+    Name: 'Alex',
+    startDate:new Date(2021,3,7,15,0),
+    endDate:new Date(2021,3,7,14,40),
+    Status:'active'   
+},
+{
+    Id:4,
+    title: 'Oftalmolog',
+    Name:'bija',
+    startDate:new Date(2021,4,5,16,0),
+    endDate:new Date(2021,4,6,16,40),
+    Status:'active'   
+}
+]
+function Appointment() {
 
     return (
         <>
-            {data? 
-                <Scheduler data={data}>
-                    <ViewState defaulturrentDate={Date.now()}/>
-                    <MonthView />
-                    <Toolbar />
-                    <DateNavigator />
-                    <TodayButton />
-                    <Appointments />
-                </Scheduler>
-                :
-                <>data is loading...</>
-            }
+            <Scheduler data={scheduleList}>
+                <ViewState defaulturrentDate={Date.now()}/>
+                <MonthView />
+                <Toolbar />
+                <DateNavigator />
+                <TodayButton />
+                <Appointments />
+            </Scheduler>
             
         </>
     )

@@ -16,7 +16,7 @@ function SpecialistData(props) {
     })
 
     useEffect(()=>{
-        axios.get(`https://powerful-brushlands-81010.herokuapp.com/medic-services/${userData[0].id}`)
+        axios.get(`http://localhost:3000/medic-services/${userData[0].id}`)
         .then(result=>{
             setServicii(result.data);
             console.log("servicii",result.data);
@@ -26,7 +26,7 @@ function SpecialistData(props) {
     
     const onSave=()=>{
         const fullname=input.name.split(' ');
-        axios.put('https://powerful-brushlands-81010.herokuapp.com/change-user',{
+        axios.put('http://localhost:3000/change-user',{
             id:input.id,
             user_type:userData[0].user_type,
             category:input.category,
@@ -101,8 +101,8 @@ function SpecialistData(props) {
     const serviceList=servicii.length>0 && servicii?.map((item,index)=>{
         return(
                 <tr>
-                    <td>{item.service_name}</td>
-                    <th align="right">{item.service_price}</th>
+                    <td>{item.serviceName}</td>
+                    <th align="right">{item.servicePrice}</th>
                 </tr>
             
             

@@ -13,7 +13,7 @@ function PacientProfile({match}) {
 
     let redirect=useHistory();
     useEffect(()=>{
-        axios.get(`https://powerful-brushlands-81010.herokuapp.com/pacienti/${match.params.id}`).then(res=>{
+        axios.get(`http://localhost:3000/pacienti/${match.params.id}`).then(res=>{
             setuserData(res.data); 
         })
     },[])
@@ -22,7 +22,7 @@ function PacientProfile({match}) {
         setEnableInput(value);
     }
     const deleteRequest=()=>{
-        axios.delete('https://powerful-brushlands-81010.herokuapp.com/delete',{data:{
+        axios.delete('http://localhost:3000/delete',{data:{
             id:userData[0].id,
             user_type:userData[0].user_type
         }})
@@ -75,15 +75,21 @@ function PacientProfile({match}) {
                         <a  onClick={()=>setActiveTab('profile')} className={activeTab=='profile'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}>Profile info</a>
                         <a  onClick={()=>setActiveTab('appointments')} className={activeTab=='appointments'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}>Appointments</a>
                     </div> 
+                    {userType.user_type!=='medic' &&
+                        <div className='is-flex is-justify-content-flex-end is-pulled-right sub-menu-icons'>
+                        <a  onClick={()=>setActiveTab('app')} className={activeTab=='app'?"px-3 has-text-link has-text-weight-semibold is-pulled-left":"px-3 has-text-grey is-pulled-left"}> <i className="fas fa-calendar-plus fa-2x "/> </a>
+                        </div>
+                    }
+                    
+                        
+                    
                 </div>
 
                 {
-                    activeTab=='profile' & userData.length>0 ? <PacientData userData={userData} enableInput={enableInput} toggler={toggleButtons}/>:
-                    <></>
+                    activeTab=='profile' & userData.length>0 && <PacientData userData={userData} enableInput={enableInput} toggler={toggleButtons}/>
                 }
                 {
-                    activeTab=='appointments' & userData.length>0 ? <Appointments user={userData}/>:
-                    <></>
+                    activeTab=='appointments' && <Appointments/>
                 }
                                 
             </div>
