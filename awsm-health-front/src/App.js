@@ -6,7 +6,7 @@ import React, {useState,useEffect,useContext} from 'react';
 import Login from './Pages/Signin/Login/Login';
 import Register from './Pages/Signin/Register/Register';
 import MainView from './MainView';
-import {Redirect, Route } from 'react-router';
+import {UserContext} from  './UserContext'
 
 
 
@@ -21,20 +21,19 @@ function App() {
     setRoute(argument);
   }
 
-  const onChangeUser=(argument)=>{
-    
-    setUserType(argument)
-    
-  }
+
   useEffect(()=>{
-    <Redirect to="/"/>
+    console.log("signed",isSignedIn)
   },[isSignedIn])
     return (
       <div className="App">
         {
-          route==='/' 
+          isSignedIn &route==='/'
           ?
-              <MainView onRouteChange={(argument)=>onRouteChange(argument)} userType={userType}/>
+          <UserContext.Provider value={userType}>
+            <MainView onRouteChange={(argument)=>onRouteChange(argument)} isSignedIn={isSignedIn}/>
+          </UserContext.Provider>
+              
             
 
           :(

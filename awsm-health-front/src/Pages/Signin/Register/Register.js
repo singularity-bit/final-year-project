@@ -21,6 +21,8 @@ function Register(props){
     const [numeIsValid, setnumeIsValid] = useState(false)
     const [prenumeIsValid, setprenumeIsValid] = useState(false)
 
+    const [submitIsvalid,setSubmitIsValid]=useState(false)
+
     //regex pt cnp
     let cnpREGEX=new RegExp(/^[1-9]\d{2}(0[1-9]|1[0-2])(0[1-9]|[12]\d|3[01])(0[1-9]|[1-4]\d|5[0-2]|99)(00[1-9]|0[1-9]\d|[1-9]\d\d)\d$/)
     //regex pt email
@@ -88,7 +90,11 @@ function Register(props){
     }
 
     const onRegister=()=>{
-        axios.post('http://localhost:3000/register',{
+        username.length>0 &
+        numeIsValid &
+        prenumeIsValid &
+        passwordIsValid &&
+        axios.post('https://powerful-brushlands-81010.herokuapp.com/register',{
             cnp_pacient:cnp,
             nume_pacient:nume,
             prenume_pacient:prenume,
@@ -97,9 +103,17 @@ function Register(props){
             tel_nr:phoneNr,
             email:signInEmail,
             password:signInPassword
-        }).then(res=>{res.status==='OK' && setTargetRoute('login')})
+        }).then(res=>{res.status===200 && setTargetRoute('login')})
     }
-    
+    useEffect(()=>{
+        setcnp('')
+        setNume('')
+        setPrenume('')
+        setusername('')
+        setphoneNr('')
+        setsignInEmail('')
+        setssignInPassword('')
+    },[])
     useEffect(()=>{
         onRouteChange(targetRoute);
     },[targetRoute])

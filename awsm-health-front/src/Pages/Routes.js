@@ -1,5 +1,5 @@
-import React from 'react';
-import {Switch,Route, BrowserRouter} from 'react-router-dom';
+import React,{useContext} from 'react';
+import {Switch,Route, BrowserRouter,Redirect} from 'react-router-dom';
 
 //components
 import Home from './Home/Home'
@@ -13,22 +13,27 @@ import Login from './Signin/Login/Login'
 import SpecialistProfile from './Specialist/SpecialistProfile'
 import Register from './Signin/Register/Register'
 import {UserContext} from '../UserContext'
-import {CategoryContext,SpecialistContext} from './Specialist/CategoryContext'
-import axios from 'axios'
+import NotFound from '../Components/NotFound/NotFound'
 
-const  Routes=({userType})=>{
+const  Routes=(props)=>{
+    const userType=useContext(UserContext)
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+        <Route {...rest} render={(props) => (
+            userType.user_type === 'admin'
+            ? <Component {...props} />
+            : <NotFound/>
+        )} />
+    )
     return (
             <Switch>
-                <UserContext.Provider value={userType}>
+                
                         <Route exact path='/' render={(props)=>(
                             <Home {...props}/>
                         )}/>
                         <Route  path='/appointments' render={(props)=>(
                             <Messages {...props}/>
                         )} component={Appointment}/>
-                        <Route  path='/patients' render={(props)=>(
-                            <Pacienti {...props}/>
-                        )}/>
+                        <PrivateRoute  path='/patients' component={Pacienti}/>
                         <Route  path='/specialist' render={(props)=>(
                             <Specialist {...props}/>
                         )}/>
@@ -39,10 +44,7 @@ const  Routes=({userType})=>{
                         <Route path='/new-appointment' component={NewAppointment}/>
                         
                         <Route path='/medic/:id'  component={SpecialistProfile}/>
-                        <Route path='/pacient/:id'  component={PacientProfile}/>
-                </UserContext.Provider>
-                    
-                
+                        <PrivateRoute path='/pacient/:id'  component={PacientProfile}/>        
             </Switch>
         
     )

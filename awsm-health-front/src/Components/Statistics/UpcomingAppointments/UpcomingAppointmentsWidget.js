@@ -13,17 +13,46 @@ function UpcomingAppointmentsWidget() {
     
    //shows only active app
 useEffect(()=>{
-    console.log("user id",userType.id)
-    userType?.id && axios.post('http://localhost:3000/upcoming-appoinments',{
-        id:userType.id
-    }).then(res=> setAppointments(res.data));
+    if(userType?.user_type==='pacient'){
+        axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-pacient-appoinments',{
+            params:{
+                id:userType.id
+            }
+        }).then(res=> setAppointments(res.data));
+    }else if(userType?.user_type==='medic') {
+        axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-medic-appoinments',({
+            params:{
+                id:userType.id
+            }
+        })).then(result=>{
+            setAppointments(result.data)})
+    }else{
+        axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-appoinments').then(result=>{
+            console.log("appoinments",result.data)
+            setAppointments(result.data)})
+    }
     
 },[])
 
 useEffect(()=>{
-    userType?.id && axios.post('http://localhost:3000/upcoming-appoinments',{
-        id:userType.id
-    }).then(res=> setAppointments(res.data));
+    if(userType?.user_type==='pacient'){
+        axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-pacient-appoinments',{
+            params:{
+                id:userType.id
+            }
+        }).then(res=> setAppointments(res.data));
+    }else if(userType?.user_type==='medic') {
+        axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-medic-appoinments',({
+            params:{
+                id:userType.id
+            }
+        })).then(result=>{
+            setAppointments(result.data)})
+    }else{
+        axios.get('https://powerful-brushlands-81010.herokuapp.com/upcoming-appoinments').then(result=>{
+            console.log("appoinments",result.data)
+            setAppointments(result.data)})
+    }
     
 },[changedAppointments])       
 

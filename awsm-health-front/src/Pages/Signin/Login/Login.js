@@ -9,6 +9,7 @@ function Login (props) {
     const [username, setusername] = useState('');
     const [signInPassword, setsignInPassword] = useState('');
     const [auth,setAuth]=useState(false)
+    const [wrongData,setWrongData]=useState(false)
     
     const onUsernameChange=(event)=>{
         setusername(event.target.value)         
@@ -18,13 +19,22 @@ function Login (props) {
     }
 
     const checkCredentials=()=>{
-        axios.post('http://localhost:3000/signin',{
+        axios.post('https://powerful-brushlands-81010.herokuapp.com/signin',{
             username:username,
             password:signInPassword
         }).then(result=>{
+            console.log("signin data",result.data)
+            if(result.data.id){
+                setUser(result.data)
+                setAuth(true)
+                setWrongData(false)
+            }else {
+                
+                setUser()
+                setAuth(false)
+                setWrongData(true)
+            }
             
-            setUser(result.data)
-            setAuth(true)
         }).catch(err=>console.log(err))
     }
       //update in main App user type
@@ -36,8 +46,21 @@ function Login (props) {
         }
     },[auth])
         return(
+            
             <section className="hero is-fullheight">
-                    
+                    {
+                        wrongData?
+                        <section class="hero">
+                        <div class="hero-body">
+                            <p class="title">
+                            Woops
+                            </p>
+                            <p class="subtitle">
+                            something is wrong
+                            </p>
+                        </div>
+                        </section>:
+                        
                         <div className="column is-4 is-offset-4">
                             <p className="title is-1 has-text-centered has-text-left-mobile pt-6">AWSMHealth</p>
                             <h2 className="subtitle has-text-centered is-size-5 ">Please sign-in or register</h2>
@@ -72,6 +95,8 @@ function Login (props) {
                                 <a href="../">Need Help?</a>
                             </p>             
                     </div>
+                }
+                    
                     
             </section> 
         );
