@@ -73,20 +73,20 @@ const register= (req,res,db,bcrypt,saltRounds)=>{
 }
 
 const makeAppointment=(req,res,db)=>{
-    const { end_date,start_date,
+    const { endDate,startDate,
             nume_medic,prenume_medic,
             prenume_pacient,nume_pacient,
             status,title
         }=req.body;
-    const medici_id= db.select('medici.id').from('medici').where('medici.nume_medic','=',nume_medic).andWhere('medici.prenume_medic','=',prenume_medic);
+    const medicID= db.select('medici.id').from('medici').where('medici.nume_medic','=',nume_medic).andWhere('medici.prenume_medic','=',prenume_medic);
     const pacientID=db.select('pacienti.id').from('pacienti').where('pacienti.nume_pacient','=',nume_pacient).andWhere('pacienti.prenume_pacient','=',prenume_pacient);
     db('appointments').insert({
         title:title,
-        start_date:start_date,
-        end_date:end_date,
+        startDate:startDate,
+        endDate:endDate,
         status:status,
         pacient_id:pacientID,
-        medic_id:medici_id
+        medic_id:medicID
     }).then(result=>res.json(result)).catch(err=>res.json(err));
 }
 
