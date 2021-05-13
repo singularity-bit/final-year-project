@@ -16,7 +16,7 @@ const changeUser=(req,res,db)=>{
             'prenume_medic':req.body.prenume_medic,
             'cnp_medic':req.body.cnp_medic,
             'tel_nr':req.body.tel_nr,
-            'email':req.body.tel_nr
+            'email':req.body.email
         }
         db('medici').where({id}).update(user).then(result=>res.json(result)).catch(err=>res.json(err));
     }
