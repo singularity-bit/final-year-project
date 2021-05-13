@@ -183,12 +183,9 @@ const getMedicServices=(req,res,db)=>{
 
 
 const rootData=(req,res,db)=>{
-    let getFinishedAppointments=''
-    let getTotalPacienti=''
-    let getTotalSpecialists=''
-    db('appointments').count('*').where('status','=','finished').then(result=>getFinishedAppointments=result).catch(err=>res.json(err));
-    db('pacienti').count('*').then(result=>getTotalPacienti=result).catch(err=>res.json(err));
-    db('medici').count('*').then(result=>getTotalSpecialists=result).catch(err=>res.json(err));
+    const getFinishedAppointments= db('appointments').count('*').where('status','=','finished').then(result=>result).catch(err=>res.json(err));
+    const getTotalPacienti= db('pacienti').count('*').then(result=>result).catch(err=>res.json(err));
+    const getTotalSpecialists= db('medici').count('*').then(result=>result).catch(err=>res.json(err));
 
     getFinishedAppointments.length>0 & 
     getTotalPacienti.length>0 & 
