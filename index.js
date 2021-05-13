@@ -14,7 +14,9 @@ const { upcomingPacientAppointments,
         upcomingMedicAppointments,
         Appointments,
         upcomingAppointments,
-        rootData,
+        getTotalSpecialists,
+        getTotalPacienti,
+        getFinishedAppointments,
         getSpecialistsByCategory,
         getServicesByCategory,
         getCategories,
@@ -45,7 +47,7 @@ app.use(cors());
 if ("development" == app.get("env")) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
-app.get('/statistics',(req,res)=>rootData(req,res,db))
+app.get('/',(req,res)=>{res.send("its working")})
 app.get('/appoinments',(req,res)=>Appointments(req,res,db))
 app.get('/upcoming-appoinments',(req,res)=>upcomingAppointments(req,res,db))
 app.get('/upcoming-pacient-appoinments',(req,res)=>upcomingPacientAppointments(req,res,db))
@@ -66,6 +68,12 @@ app.get('/pacienti',(req,res)=>getPacienti(req,res,db))
 app.get('/pacienti/:id',(req,res)=>getPacientProfile(req,res,db))
 
 app.get('/medic-services/:id',(req,res)=>getMedicServices(req,res,db))
+
+app.get('/total-specialists',(req,res)=>getTotalSpecialists(req,res,db))
+
+app.get('/total-pacienti',(req,res)=>getTotalPacienti(req,res,db))
+
+app.get('/finished-appointments',(req,res)=>getFinishedAppointments(req,res,db))
 
 app.post('/signin',(req,res)=>signin(req,res,db,bcrypt))
 

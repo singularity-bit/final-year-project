@@ -181,27 +181,26 @@ const getMedicServices=(req,res,db)=>{
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
 
-
-const rootData=(req,res,db)=>{
-    const getFinishedAppointments= db('appointments').count('*').where('status','=','finished').then(result=>result).catch(err=>res.json(err));
-    const getTotalPacienti= db('pacienti').count('*').then(result=>result).catch(err=>res.json(err));
-    const getTotalSpecialists= db('medici').count('*').then(result=>result).catch(err=>res.json(err));
-
-    getFinishedAppointments.length>0 & 
-    getTotalPacienti.length>0 & 
-    getTotalSpecialists.length>0 && 
-    res.json({
-        finishedAppointments:getFinishedAppointments,
-        totalPacienti:getTotalPacienti,
-        totalSpecialists:getTotalSpecialists
-    })
+const getTotalSpecialists=(req,res,db)=>{
+    db('medici').count('*').then(result=>res.josn(result)).catch(err=>res.json(err));
 }
+
+const getTotalPacienti=(req,res,db)=>{
+    db('pacienti').count('*').then(result=>res.josn(result)).catch(err=>res.json(err));
+}
+
+const getFinishedAppointments=(req,res,db)=>{
+    db('appointments').count('*').where('status','=','finished').then(result=>res.josn(result)).catch(err=>res.json(err));
+}
+
 module.exports={
     Appointments:Appointments,
     upcomingAppointments:upcomingAppointments,
     upcomingPacientAppointments:upcomingPacientAppointments,
     upcomingMedicAppointments:upcomingMedicAppointments,
-    rootData:rootData,
+    getTotalSpecialists:getTotalSpecialists,
+    getTotalPacienti:getTotalPacienti,
+    getFinishedAppointments:getFinishedAppointments,
     getSpecialistsByCategory:getSpecialistsByCategory,
     getServicesByCategory:getServicesByCategory,
     getCategories:getCategories,
