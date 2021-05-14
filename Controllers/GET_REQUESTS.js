@@ -20,6 +20,7 @@ const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
     .where('start_date','>',currentDate).andWhere('pacienti.id','=',id)
+    .andWhere('status','=','active')
     .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }

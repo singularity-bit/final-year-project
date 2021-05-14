@@ -48,6 +48,7 @@ if ("development" == app.get("env")) {
     process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 }
 app.get('/',(req,res)=>{res.send("its working")})
+
 app.get('/appoinments',(req,res)=>Appointments(req,res,db))
 app.get('/upcoming-appoinments',(req,res)=>upcomingAppointments(req,res,db))
 app.get('/upcoming-pacient-appoinments',(req,res)=>upcomingPacientAppointments(req,res,db))
