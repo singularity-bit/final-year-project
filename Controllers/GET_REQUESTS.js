@@ -1,5 +1,5 @@
 //all get requests
-import moment from 'moment'
+const moment=require('moment')
 
 const upcomingPacientAppointments=(req,res,db)=>{
     
