@@ -80,6 +80,8 @@ const makeAppointment=(req,res,db)=>{
         }=req.body;
     const medici_id= db.select('medici.id').from('medici').where('medici.nume_medic','=',nume_medic).andWhere('medici.prenume_medic','=',prenume_medic);
     const pacientID=db.select('pacienti.id').from('pacienti').where('pacienti.nume_pacient','=',nume_pacient).andWhere('pacienti.prenume_pacient','=',prenume_pacient);
+    console.log("meidic id",medici_id);
+    console.log("pacient id",pacientID)
     db('appointments').returning('*').insert({
         title:title,
         start_date:start_date,
