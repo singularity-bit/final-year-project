@@ -1,6 +1,9 @@
 //all get requests
+import moment from 'moment'
 
 const upcomingPacientAppointments=(req,res,db)=>{
+    
+const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
     const {id}=req.query
     db.select(
         'appointments.id',
@@ -16,7 +19,7 @@ const upcomingPacientAppointments=(req,res,db)=>{
     .from('medici')
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
-    .where('status','=','active').andWhere('pacienti.id','=',id)
+    .where('start_date','>',currentDate).andWhere('pacienti.id','=',id)
     .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
