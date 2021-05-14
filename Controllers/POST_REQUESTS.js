@@ -78,7 +78,7 @@ const makeAppointment=(req,res,db)=>{
             id_pacient,
             status,title
         }=req.body;
-    const medici_id= db('medici').returning('id').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(result=>console.log("medici id",result));
+ db('medici').returning('id').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(result=>{
 
     db('appointments').returning('*').insert({
         title:title,
@@ -86,8 +86,11 @@ const makeAppointment=(req,res,db)=>{
         end_date:end_date,
         status:status,
         pacient_id:id_pacient,
-        medic_id:medici_id[0].id
+        medic_id:result[0].id
     }).then(result=>res.json(result)).catch(err=>res.json(err));
+ });
+
+    
 }
 
 const updateAppoinment=(req,res,db)=>{
