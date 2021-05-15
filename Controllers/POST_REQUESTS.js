@@ -1,3 +1,15 @@
+const nodemailer=require('nodemailer')
+
+
+const mail = nodemailer.createTransport({
+    service: 'gmail',
+    auth: {
+      user: 'awsmhealth.notifications@gmail.com',
+      pass: 'priwet12'
+    }
+  });
+  
+
 
 const signin=(req,res,db,bcrypt) => {
     const {username,password}=req.body
@@ -78,7 +90,7 @@ const makeAppointment=(req,res,db)=>{
             id_pacient,
             status,title
         }=req.body;
- db('medici').returning('id').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(result=>{
+ db('medici').returning('id','email','nume_medic','prenume_medic').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(result=>{
 
     db('appointments').returning('*').insert({
         title:title,
@@ -87,7 +99,23 @@ const makeAppointment=(req,res,db)=>{
         status:status,
         pacient_id:id_pacient,
         medic_id:result[0].id
-    }).then(result=>res.json(result)).catch(err=>res.json(err));
+    }).then(result=>{
+        res.json(result);
+        const mailOptions= {
+            from: 'awsmhealth.notifications@gmail.com',
+            to: `${result[0].email}`,
+            subject: `AWSMHealth appontment`,
+            html: `Salut \n Ati facut o programare pe data de ${start_date} \n Medicul care vă va asista este : ${result[0].nume_medic} ${result[0].prenume_medic} \n Ati selectat Serviciile :  \n Total de plata : ` , 
+        }
+        mail.sendMail(mailOptions, function(error, info){
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+            }
+        });
+    
+    }).catch(err=>res.json(err));
  });
 
     
