@@ -101,7 +101,11 @@ const makeAppointment=(req,res,db)=>{
         end_date:end_date,
         status:status,
         pacient_id:id_pacient,
-        medic_id:medic[0].id
+        medic_id:medic[0].id,
+        services:`${selectedServices?.map(item=>{
+            return ` ,${item.service_name}, `
+            })}`,
+        total_price:totalPrice
     }).then(result=>{
         res.json(result);
         
