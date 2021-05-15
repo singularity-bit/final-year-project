@@ -110,12 +110,12 @@ const makeAppointment=(req,res,db)=>{
                 from: 'awsmhealth.notifications@gmail.com',
                 to: `${pacient_email[0].email}`,
                 cc: `${medic[0].email}`,
-                subject: `AWSMHealth appontment`,
+                subject: `AWSMHealth appointment`,
                 html: `<p>Salut \n Aveti o programare pe data de ${start_date}</p>
                     <p>Medicul care vă va asista este : ${medic[0].nume_medic} ${medic[0].prenume_medic} </p> 
                     <p>Aveti selectate  Serviciile : 
                         <span>${selectedServices?.map(item=>{
-                            return ` ${item} ,`
+                            return ` ${item.service_name} (pret : ${item.service_price} lei),`
                             })}
                         </span> 
                     </p>
