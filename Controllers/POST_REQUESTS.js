@@ -113,9 +113,12 @@ const makeAppointment=(req,res,db)=>{
                 subject: `AWSMHealth appontment`,
                 html: `<p>Salut \n Aveti o programare pe data de ${start_date}</p>
                     <p>Medicul care vă va asista este : ${medic[0].nume_medic} ${medic[0].prenume_medic} </p> 
-                    <p>Aveti selectate  Serviciile : ${selectedServices?.map(item=>{
-                        return <span>{item},</span>
-                    })} </p>
+                    <p>Aveti selectate  Serviciile : 
+                        <span>${selectedServices?.map(item=>{
+                            return ` ${item} ,`
+                            })}
+                        </span> 
+                    </p>
                     <p>Total de plata :${totalPrice} </p>
                     <br/><br/>
                     <h1>Cu stima,</h1>
