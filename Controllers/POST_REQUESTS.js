@@ -79,7 +79,7 @@ const register= (req,res,db,bcrypt,saltRounds)=>{
             email:email,
             password:result
         }           
-        db('pacienti').insert(users).then(result=>res.json(result)).catch(err=>res.json(err));
+        db('pacienti').insert(users).then(result=>{console.log("register:",result); res.json(result)}).catch(err=>res.json(err));
     }       
 ).catch(err=>res.json(err))  
 }
