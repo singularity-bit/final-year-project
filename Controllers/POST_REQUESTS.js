@@ -90,7 +90,7 @@ const makeAppointment=(req,res,db)=>{
             id_pacient,
             status,title
         }=req.body;
- db('medici').returning('id','email','nume_medic','prenume_medic').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(result=>{
+ db('medici').returning('id','email','nume_medic','prenume_medic').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(medic=>{
 
     db('appointments').returning('*').insert({
         title:title,
@@ -103,9 +103,9 @@ const makeAppointment=(req,res,db)=>{
         res.json(result);
         const mailOptions= {
             from: 'awsmhealth.notifications@gmail.com',
-            to: `${result[0].email}`,
+            to: `${medic[0].email}`,
             subject: `AWSMHealth appontment`,
-            html: `Salut \n Ati facut o programare pe data de ${start_date} \n Medicul care vă va asista este : ${result[0].nume_medic} ${result[0].prenume_medic} \n Ati selectat Serviciile :  \n Total de plata : ` , 
+            html: `Salut \n Ati facut o programare pe data de ${start_date} \n Medicul care vă va asista este : ${medic[0].nume_medic} ${medic[0].prenume_medic} \n Ati selectat Serviciile :  \n Total de plata : ` , 
         }
         mail.sendMail(mailOptions, function(error, info){
             if (error) {
