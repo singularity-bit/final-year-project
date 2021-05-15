@@ -85,9 +85,12 @@ const register= (req,res,db,bcrypt,saltRounds)=>{
 }
 
 const makeAppointment=(req,res,db)=>{
-    const { end_date,start_date,
+    const { end_date,
+            start_date,
             nume_medic,prenume_medic,
             id_pacient,
+            selectedServices,
+            totalPrice,
             status,title
         }=req.body;
  db('medici').returning('id','email','nume_medic','prenume_medic').where('nume_medic','=',nume_medic).andWhere('prenume_medic','=',prenume_medic).then(medic=>{
@@ -101,19 +104,33 @@ const makeAppointment=(req,res,db)=>{
         medic_id:medic[0].id
     }).then(result=>{
         res.json(result);
-        const mailOptions= {
-            from: 'awsmhealth.notifications@gmail.com',
-            to: `${medic[0].email}`,
-            subject: `AWSMHealth appontment`,
-            html: `Salut \n Ati facut o programare pe data de ${start_date} \n Medicul care vă va asista este : ${medic[0].nume_medic} ${medic[0].prenume_medic} \n Ati selectat Serviciile :  \n Total de plata : ` , 
-        }
-        mail.sendMail(mailOptions, function(error, info){
-            if (error) {
-                console.log(error);
-            } else {
-                console.log('Email sent: ' + info.response);
+        
+        db('pacienti').returning('email').where('id','=',id_pacient).then(pacient_email=>{
+            const mailOptions= {
+                from: 'awsmhealth.notifications@gmail.com',
+                to: `${pacient_email[0].email}`,
+                cc: `${medic[0].email}`,
+                subject: `AWSMHealth appontment`,
+                html: `<p>Salut \n Aveti o programare pe data de ${start_date}</p>
+                    <p>Medicul care vă va asista este : ${medic[0].nume_medic} ${medic[0].prenume_medic} </p> 
+                    <p>Aveti selectate  Serviciile : ${selectedServices?.map(item=>{
+                        return <span>{item},</span>
+                    })} </p>
+                    <p>Total de plata :${totalPrice} </p>
+                    <br/><br/>
+                    <h1>Cu stima,</h1>
+                    <h1>Echipa AWSMHealth</h1>` , 
+                
             }
-        });
+            mail.sendMail(mailOptions, function(error, info){
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log('Email sent: ' + info.response);
+                }
+            });
+        })
+        
     
     }).catch(err=>res.json(err));
  });
