@@ -199,7 +199,7 @@ const getTotalPacienti=(req,res,db)=>{
 }
 
 const getFinishedAppointments=(req,res,db)=>{
-    const currentTime=moment.format("YYYY-MM-DD HH:mm:ss");
+    const currentTime=moment().format("YYYY-MM-DD HH:mm:ss");
     db('appointments').count('id').where('status','=','finished').andWhere('end_date','<',currentTime).then(result=>res.json(result)).catch(err=>res.json(err));
 }
 
