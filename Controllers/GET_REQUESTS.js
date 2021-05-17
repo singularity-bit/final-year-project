@@ -15,6 +15,7 @@ const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
         'appointments.start_date',
         'appointments.end_date',
         'appointments.status',
+        'appointments.services',
         'appointments.total_price'
     )
     .from('medici')
@@ -36,6 +37,7 @@ const Appointments=(req,res,db)=>{
         'appointments.start_date',
         'appointments.end_date',
         'appointments.status',
+        'appointments.services',
         'appointments.total_price'
     )
     .from('medici')
@@ -56,6 +58,7 @@ const upcomingAppointments=(req,res,db)=>{
         'appointments.start_date',
         'appointments.end_date',
         'appointments.status',
+        'appointments.services',
         'appointments.total_price'
     )
     .from('medici')
@@ -79,6 +82,7 @@ const upcomingMedicAppointments=(req,res,db)=>{
         'appointments.start_date',
         'appointments.end_date',
         'appointments.status',
+        'appointments.services',
         'appointments.total_price'
     )
     .from('medici')

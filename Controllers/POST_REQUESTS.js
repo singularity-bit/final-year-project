@@ -104,7 +104,7 @@ const makeAppointment=(req,res,db)=>{
         pacient_id:id_pacient,
         medic_id:medic[0].id,
         services:`${selectedServices?.map(item=>{
-            return ` ,${item.service_name}, `
+            return ` ${item.service_name} `
             })}`,
         total_price:totalPrice
     }).then(result=>{
