@@ -26,6 +26,33 @@ const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
     .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
+
+const finishedPacientAppointments=(req,res,db)=>{
+    const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
+    const {id}=req.query
+    db.select(
+        'appointments.id',
+        'medici.nume_medic',
+        'medici.prenume_medic',
+        'pacienti.nume_pacient',
+        'pacienti.prenume_pacient',
+        'appointments.title',
+        'appointments.start_date',
+        'appointments.end_date',
+        'appointments.status',
+        'appointments.services',
+        'appointments.total_price'
+    )
+    .from('medici')
+    .join('appointments','medici.id','appointments.medic_id')
+    .join('pacienti','pacienti.id','appointments.pacient_id')
+    .where('start_date','<',currentDate).andWhere('pacienti.id','=',id)
+    .andWhere(function(){
+        this.where('status','=','finished').orWhere('status','=','canceled')
+    })
+    .orderBy('appointments.start_date','desc')
+    .then(result=>res.json(result)).catch(err=>res.json(err));
+}
 const Appointments=(req,res,db)=>{
     db.select(
         'appointments.id',
@@ -89,6 +116,32 @@ const upcomingMedicAppointments=(req,res,db)=>{
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
     .where('status','=','active').andWhere('medici.id','=',id)
+    .orderBy('appointments.start_date','desc')
+    .then(result=>res.json(result)).catch(err=>res.json(err));
+}
+const finishedMedicAppointments=(req,res,db)=>{
+    const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
+    const {id}=req.query
+    db.select(
+        'appointments.id',
+        'medici.nume_medic',
+        'medici.prenume_medic',
+        'pacienti.nume_pacient',
+        'pacienti.prenume_pacient',
+        'appointments.title',
+        'appointments.start_date',
+        'appointments.end_date',
+        'appointments.status',
+        'appointments.services',
+        'appointments.total_price'
+    )
+    .from('medici')
+    .join('appointments','medici.id','appointments.medic_id')
+    .join('pacienti','pacienti.id','appointments.pacient_id')
+    .where('start_date','<',currentDate).andWhere('medici.id','=',id)
+    .andWhere(function(){
+        this.where('status','=','finished').orWhere('status','=','canceled')
+    })
     .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
@@ -214,6 +267,8 @@ module.exports={
     upcomingMedicAppointments:upcomingMedicAppointments,
     getTotalSpecialists:getTotalSpecialists,
     getTotalPacienti:getTotalPacienti,
+    finishedMedicAppointments:finishedMedicAppointments,
+    finishedPacientAppointments:finishedPacientAppointments,
     getFinishedAppointments:getFinishedAppointments,
     getSpecialistsByCategory:getSpecialistsByCategory,
     getServicesByCategory:getServicesByCategory,

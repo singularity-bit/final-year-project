@@ -25,7 +25,9 @@ const { upcomingPacientAppointments,
         getSpecialistProfile,
         getPacienti,       
         getPacientProfile,
-        getMedicServices
+        getMedicServices,
+        finishedPacientAppointments,
+        finishedMedicAppointments
 }=require('./Controllers/GET_REQUESTS')
 const {deleteUser}=require('./Controllers/DELETE_REQUESTS')
 const {changeUser}=require('./Controllers/PUT_REQUESTS')
@@ -51,14 +53,17 @@ if ("development" == app.get("env")) {
 }
 app.get('/',(req,res)=>{res.send("its working")})
 
-app.get('/appoinments',(req,res)=>Appointments(req,res,db))
-app.get('/upcoming-appoinments',(req,res)=>upcomingAppointments(req,res,db))
-app.get('/upcoming-pacient-appoinments',(req,res)=>upcomingPacientAppointments(req,res,db))
+app.get('/appoinments',(req,res)=>Appointments(req,res,db));
+app.get('/upcoming-appoinments',(req,res)=>upcomingAppointments(req,res,db));
 
-app.get('/upcoming-medic-appoinments',(req,res)=>upcomingMedicAppointments(req,res,db))
-app.get('/specialist-by-category',(req,res)=>getSpecialistsByCategory(req,res,db))
+app.get('/upcoming-pacient-appoinments',(req,res)=>upcomingPacientAppointments(req,res,db));
+app.get('/finished-pacient-appointments',(req,res)=>finishedPacientAppointments(req,res,db));
 
-app.get('/services-by-category/:category',(req,res)=>getServicesByCategory(req,res,db))
+app.get('/upcoming-medic-appoinments',(req,res)=>upcomingMedicAppointments(req,res,db));
+app.get('/finished-medic-appointments',(req,res)=>finishedMedicAppointments(req,res,db));
+app.get('/specialist-by-category',(req,res)=>getSpecialistsByCategory(req,res,db));
+
+app.get('/services-by-category/:category',(req,res)=>getServicesByCategory(req,res,db));
 
 app.get('/categories',(req,res)=>getCategories(req,res,db))
 
