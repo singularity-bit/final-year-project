@@ -79,8 +79,16 @@ const register= (req,res,db,bcrypt,saltRounds)=>{
             email:email,
             password:result
         } 
-        console.log("users register",users)          
-        db('pacienti').insert(users).then(result=>{console.log("register:",result); res.json(result)}).catch(err=>res.json(err));
+        console.log("users register",users)  
+        db.select('*').from('pacienti').where('uername','=',users.username).then(output=>{
+            if(output.length>0){  
+                res.json('status:406',
+                ' message:this user already exists')
+            }else{
+                db('pacienti').insert(users).then(result=>{console.log("register:",result); res.json(result)}).catch(err=>res.json(err));
+            }
+        })      
+        
     }       
 ).catch(err=>res.json(err))  
 }
