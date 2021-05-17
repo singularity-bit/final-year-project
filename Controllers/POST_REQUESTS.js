@@ -80,7 +80,7 @@ const register= (req,res,db,bcrypt,saltRounds)=>{
             password:result
         } 
         console.log("users register",users)  
-        db.select('*').from('pacienti').where('uername','=',users.username).then(output=>{
+        db.select('*').from('pacienti').where('username','=',users.username).then(output=>{
             if(output.length>0){  
                 res.json('status:406',
                 ' message:this user already exists')
