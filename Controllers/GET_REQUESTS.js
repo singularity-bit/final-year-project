@@ -115,7 +115,7 @@ const upcomingMedicAppointments=(req,res,db)=>{
     .from('medici')
     .join('appointments','medici.id','appointments.medic_id')
     .join('pacienti','pacienti.id','appointments.pacient_id')
-    .where('status','=','active').andWhere('medici.id','=',id)
+    .where('start_date','>',currentDate).andWhere('medici.id','=',id)
     .orderBy('appointments.start_date','desc')
     .then(result=>res.json(result)).catch(err=>res.json(err));
 }
