@@ -97,6 +97,7 @@ const upcomingAppointments=(req,res,db)=>{
 }
 
 const upcomingMedicAppointments=(req,res,db)=>{
+    const currentDate=moment().format("YYYY-MM-DD HH:mm:ss");
     const {id}=req.query;
     console.log("id")
     db.select(
